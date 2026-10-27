@@ -10,8 +10,8 @@ It's a static site with no build step: open `index.html`, or serve the folder wi
 
 | File | What it is |
 | --- | --- |
-| `index.html` | Page structure: header, hero, series overview, contact, footer and the full-screen viewer |
-| `content.js` | **All the content.** The artist's details, the hero photo and every section of paintings |
+| `index.html` | Page structure: header, hero, series overview, about, contact, footer and the full-screen viewer |
+| `content.js` | **All the content.** The artist's details, the hero photo, every section of paintings, the bio and the CV |
 | `app.js` | Turns `content.js` into the page: menu, series cards, painting grids and the viewer |
 | `styles.css` | Design tokens (colours, fonts, spacing) at the top, then styles for each part. Light and dark mode are included |
 
@@ -42,6 +42,18 @@ The menu link, the series card, the counts and the grid are all created automati
 - `cover` on a section (e.g. `cover: "new_painting_02.jpg"`) picks the image on its series card. Otherwise the first image is used.
 - If an image can't be found (for example a misspelt file name), it is left out of the page rather than shown broken.
 
+## Updating the About section and CV
+
+Also in `content.js`:
+
+- **Bio:** edit the paragraphs in `bio`.
+- **New exhibition or review:** copy a line in the right `cv` group and put it at the top (lists are newest first), e.g.
+  `{ year: 2027, title: "Show Title", detail: "Gallery Name, City, ST" },`
+  In the press groups, `title` is the article title (quotation marks are added automatically) and `detail` is the author and publication.
+- **Link to a review or show:** add `url: "https://..."` to its line and the title becomes a link.
+- **New group** (e.g. "Collections" or "Awards"): copy a whole `{ heading: ..., items: [...] }` block.
+- **Contact details** (email, location, Instagram) are in `artist` at the top. Delete a line to hide it from the page. A `phone: "..."` line can be added to show a phone number.
+
 ## Features
 
 - A justified grid: each row lines up and every painting keeps its proportions and order. Images load as you scroll.
@@ -51,4 +63,6 @@ The menu link, the series card, the counts and the grid are all created automati
 
 ## Sources
 
-Content gathered on 2026-10-26 from wayneherpich.com: the home page, the three gallery pages (Paintings 1–3) and all 61 painting pages. The old site has no titles or captions for the paintings, so none are shown yet. Add them in `content.js` when available.
+The bio, CV, email and location come from the artist's resume (added 2026-10-27). The Instagram link is the account linked from wayneherpich.com, @wayne_herpich_art.
+
+Painting content gathered on 2026-10-26 from wayneherpich.com: the home page, the three gallery pages (Paintings 1–3) and all 61 painting pages. The old site has no titles or captions for the paintings, so none are shown yet. Add them in `content.js` when available.

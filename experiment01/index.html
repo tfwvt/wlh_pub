@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wayne Herpich — Paintings</title>
-  <meta name="description" content="Paintings by Wayne Herpich.">
+  <meta name="description" content="Paintings by Wayne Herpich, a painter based in Torrington, Connecticut.">
   <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
@@ -32,6 +32,7 @@
       <a class="wordmark" href="#top" data-artist-name>Wayne Herpich</a>
       <nav class="site-nav" aria-label="Main">
         <!-- Section links are added by app.js -->
+        <a href="#about" data-nav="about">About</a>
         <a href="#contact" data-nav="contact">Contact</a>
       </nav>
       <button class="theme-toggle" type="button" aria-label="Switch between light and dark mode">
@@ -45,7 +46,7 @@
     <section class="hero" id="top">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Paintings</p>
+          <p class="eyebrow">Paintings<span data-location-sep> · </span><span data-location></span></p>
           <h1 class="hero-name" data-artist-name>Wayne Herpich</h1>
           <p class="hero-meta" data-hero-meta></p>
           <div class="hero-actions">
@@ -75,6 +76,16 @@
       </div>
     </noscript>
 
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="wrap about-grid">
+        <div class="about-intro">
+          <h2 class="about-title" id="about-title">About</h2>
+          <div class="about-bio" data-bio></div>
+        </div>
+        <div class="cv" data-cv></div>
+      </div>
+    </section>
+
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap contact-inner">
         <h2 class="contact-title" id="contact-title">Get in touch</h2>
@@ -84,10 +95,18 @@
             <span class="contact-kind">Email</span>
             <span class="contact-value" data-email-text></span>
           </a>
+          <a class="contact-link" data-phone href="#">
+            <span class="contact-kind">Phone</span>
+            <span class="contact-value" data-phone-text></span>
+          </a>
           <a class="contact-link" data-instagram href="#" target="_blank" rel="noopener">
             <span class="contact-kind">Instagram</span>
             <span class="contact-value" data-instagram-text></span>
           </a>
+          <div class="contact-link" data-studio>
+            <span class="contact-kind">Based in</span>
+            <span class="contact-value" data-studio-text></span>
+          </div>
         </div>
       </div>
     </section>

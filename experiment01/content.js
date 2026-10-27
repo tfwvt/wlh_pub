@@ -24,13 +24,80 @@
  *   optional, e.g.
  *     { file: "new_painting.jpg", title: "Untitled", year: 2026,
  *       medium: "Oil on canvas", size: "40 × 30 in" },
+ *
+ * ABOUT AND CV
+ *   `bio` is the paragraph(s) at the top of the About section. `cv` is a list
+ *   of groups (Education, Exhibitions, ...), shown in order. To add a show or
+ *   a review, copy a line in the right group, newest first. To add a whole
+ *   new group, copy a `{ heading: ... }` block. In groups with
+ *   `quoteTitles: true` (press), titles are shown in quotation marks. Any
+ *   line can also have a `url` (e.g. a link to the review) to make its title
+ *   a link.
  */
 window.SITE = {
   artist: {
     name: "Wayne Herpich",
-    email: "angelbug@wayneherpich.com",
+    location: "Torrington, Connecticut",
+    email: "wayneherpich@gmail.com",
     instagram: "https://www.instagram.com/wayne_herpich_art/",
   },
+
+  bio: [
+    "Wayne Herpich is a painter who lives and works in Torrington, Connecticut. He studied painting at Pratt Institute (BFA, 1967) and the Yale School of Art and Architecture (MFA, 1969).",
+    "His work has been shown in solo and group exhibitions in New York and Connecticut, and written about in Art in America and ARTnews.",
+  ],
+
+  cv: [
+    {
+      heading: "Education",
+      items: [
+        { year: 1969, title: "Master of Fine Arts in Painting", detail: "Yale School of Art and Architecture" },
+        { year: 1967, title: "Bachelor of Fine Arts in Painting", detail: "Pratt Institute" },
+      ],
+    },
+    {
+      heading: "Solo Exhibitions",
+      items: [
+        { year: 2020, title: "New Paintings", detail: "Ober Gallery, Kent, CT" },
+        { year: 2016, title: "Further Notice", detail: "Blackston Gallery, New York, NY" },
+        { year: 2014, title: "New Vision Display", detail: "Blackston Gallery, New York, NY" },
+        { year: 2013, title: "Solo Exhibition", detail: "The Switch Factory, Bantam, CT" },
+        { year: 2012, title: "Solo Exhibition", detail: "Chad Etting Gallery, Torrington, CT" },
+      ],
+    },
+    {
+      heading: "Selected Group Exhibitions",
+      items: [
+        { year: 2024, title: "Western Figures", detail: "Five Points Gallery, Torrington, CT" },
+        { year: 2019, title: "A Game", detail: "Five Points Gallery, Torrington, CT" },
+        { year: 2017, title: "Figure This", detail: "Five Points Gallery, Torrington, CT" },
+        { year: 2016, title: "More More More", detail: "Flinn Gallery, Greenwich, CT" },
+        { year: 2016, title: "Abstraction Part I", detail: "Five Points Gallery, Torrington, CT" },
+        { year: 2014, title: "Brushless", detail: "Morgan Lehman Gallery, New York, NY" },
+        { year: 2012, title: "The New Abstractionists VI", detail: "Walter Wickiser Gallery, New York, NY" },
+        { year: 2006, title: "The Small Panel Paintings", detail: "Walter Wickiser Gallery, New York, NY" },
+      ],
+    },
+    {
+      heading: "Featured Press",
+      quoteTitles: true,
+      items: [
+        { year: 2014, title: "Wayne Herpich", detail: "Faye Hirsch, Art in America" },
+      ],
+    },
+    {
+      heading: "Selected Mentions and Reviews",
+      quoteTitles: true,
+      items: [
+        { year: 2016, title: "Wayne Herpich: Further Notice at Blackson New York", detail: "ARTnews" },
+        { year: 2016, title: "More More More Opens at the Flinn Gallery", detail: "Karen Sheer, Greenwich Free Press" },
+        { year: 2014, title: "Exhibition at Morgan Lehman Explores the Margins of Painterly Process", detail: "ArtDaily" },
+        { year: 2014, title: "Wayne Herpich", detail: "Jessica Jane Russel, Jessica Jane" },
+        { year: 2014, title: "Like Wildfire", detail: "John Haber, Haber Arts" },
+        { year: 2013, title: "Torrington Artist on Display", detail: "Ryan Flinn, The Register Citizen" },
+      ],
+    },
+  ],
 
   // Where images given by `file` are loaded from.
   imageBase: "https://wayneherpich.com/images/",

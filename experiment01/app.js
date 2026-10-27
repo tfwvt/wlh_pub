@@ -51,7 +51,7 @@
   /* ---------- Artist details ---------- */
 
   function fillArtist() {
-    const { name, email, instagram } = SITE.artist;
+    const { name, location, email, phone, instagram } = SITE.artist;
     $$("[data-artist-name]").forEach((el) => (el.textContent = name));
     document.title = `${name} — Paintings`;
 
@@ -67,6 +67,20 @@
       const handle = instagram.replace(/\/+$/, "").split("/").pop();
       $("[data-instagram-text]").textContent = "@" + handle;
     } else igLink.remove();
+
+    const phoneLink = $("[data-phone]");
+    if (phone) {
+      phoneLink.href = "tel:" + phone.replace(/[^\d+]/g, "");
+      $("[data-phone-text]").textContent = phone;
+    } else phoneLink.remove();
+
+    if (location) {
+      $("[data-location]").textContent = location;
+      $("[data-studio-text]").textContent = location;
+    } else {
+      $("[data-location-sep]").remove();
+      $("[data-studio]").remove();
+    }
 
     $("[data-year]").textContent = new Date().getFullYear();
   }
@@ -93,9 +107,9 @@
 
   function buildNav() {
     const nav = $(".site-nav");
-    const contact = $('[data-nav="contact"]', nav);
+    const firstFixed = $("a", nav); // About, Contact stay after the sections
     for (const s of sections) {
-      nav.insertBefore(h("a", { href: `#${s.id}`, "data-nav": s.id }, s.title), contact);
+      nav.insertBefore(h("a", { href: `#${s.id}`, "data-nav": s.id }, s.title), firstFixed);
     }
   }
 
@@ -175,6 +189,34 @@
               s.description && h("p", { class: "series-desc" }, s.description)),
             grid)));
     }
+  }
+
+  /* ---------- About and CV ---------- */
+
+  function buildAbout() {
+    const bio = [].concat(SITE.bio || []);
+    const groups = (SITE.cv || []).filter((g) => g && g.items && g.items.length);
+    if (!bio.length && !groups.length) {
+      $("#about").remove();
+      $('[data-nav="about"]').remove();
+      return;
+    }
+
+    $("[data-bio]").append(...bio.map((text) => h("p", null, text)));
+
+    $("[data-cv]").append(...groups.map((g) =>
+      h("section", { class: "cv-group" },
+        h("h3", { class: "cv-heading" }, g.heading),
+        h("ul", { class: "cv-list" },
+          g.items.map((item) => {
+            const title = g.quoteTitles ? `“${item.title}”` : item.title;
+            return h("li", { class: "cv-item" },
+              h("span", { class: "cv-year" }, item.year),
+              h("span", { class: "cv-text" },
+                h("span", { class: "cv-title" },
+                  item.url ? h("a", { href: item.url, target: "_blank", rel: "noopener" }, title) : title),
+                item.detail && h("span", { class: "cv-detail" }, item.detail)));
+          })))));
   }
 
   /* ---------- Full-screen viewer ---------- */
@@ -318,7 +360,9 @@
     // Highlight the menu link for the section currently on screen.
     const nav = $(".site-nav");
     const links = new Map($$("a", nav).map((a) => [a.dataset.nav, a]));
-    const targets = [...sections.map((s) => document.getElementById(s.id)), document.getElementById("contact")];
+    const targets = [...sections.map((s) => s.id), "about", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
     const visible = new Set();
     const observer = new IntersectionObserver((entries) => {
       for (const e of entries) e.isIntersecting ? visible.add(e.target.id) : visible.delete(e.target.id);
@@ -331,7 +375,7 @@
         } else a.removeAttribute("aria-current");
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    targets.forEach((t) => t && observer.observe(t));
+    targets.forEach((t) => observer.observe(t));
   }
 
   function themeToggle() {
@@ -352,6 +396,7 @@
   buildNav();
   buildOverview();
   buildSections();
+  buildAbout();
   headerEffects();
   themeToggle();
   syncFromHash();
