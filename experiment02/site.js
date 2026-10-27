@@ -388,19 +388,16 @@
   /* ---------- Contact ---------- */
 
   function renderContact() {
-    const row = (label, value) => value && h("div", { class: "contact-row" }, h("dt", null, label), h("dd", null, value));
+    const item = (label, value) => value && h("div", { class: "contact-item" }, h("dt", null, label), h("dd", null, value));
     const igHandle = artist.instagram && "@" + artist.instagram.replace(/\/+$/, "").split("/").pop();
 
     $("#main").append(
       h("div", { class: "wrap" },
         h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "Contact")),
-        h("div", { class: "two-col" },
-          h("p", { class: "contact-intro" }, "For inquiries about the paintings, please get in touch by email."),
-          h("dl", { class: "contact-list" },
-            row("Email", artist.email && h("a", { href: `mailto:${artist.email}?subject=${encodeURIComponent("Inquiry from wayneherpich.com")}` }, artist.email)),
-            row("Phone", artist.phone && h("a", { href: "tel:" + artist.phone.replace(/[^\d+]/g, "") }, artist.phone)),
-            row("Instagram", igHandle && h("a", { href: artist.instagram, target: "_blank", rel: "noopener" }, igHandle)),
-            row("Based in", artist.location)))));
+        h("dl", { class: "contact-list" },
+          item("Email", artist.email && h("a", { href: `mailto:${artist.email}?subject=${encodeURIComponent("Inquiry from wayneherpich.com")}` }, artist.email)),
+          item("Phone", artist.phone && h("a", { href: "tel:" + artist.phone.replace(/[^\d+]/g, "") }, artist.phone)),
+          item("Instagram", igHandle && h("a", { href: artist.instagram, target: "_blank", rel: "noopener" }, igHandle)))));
   }
 
   /* ---------- Go ---------- */

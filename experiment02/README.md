@@ -14,7 +14,7 @@ It's a static site with no build step: open `index.html`, or serve the folder wi
 | `work.html` | Work: one card per series |
 | `series.html?s=paintings-1` | One page per series: the paintings hung on a "wall", tabs to the other series, and previous/next links. Click a painting to see it full screen |
 | `about.html` | Bio, photograph and CV |
-| `contact.html` | Email, Instagram and location |
+| `contact.html` | Email and Instagram |
 
 There is one `series.html` for all the series. The `?s=` part of the address chooses which series it shows, so a new series doesn't need a new file. Each painting also has its own link, e.g. `series.html?s=paintings-3#12`.
 
@@ -68,4 +68,4 @@ The new series automatically gets its own page (here `series.html?s=paintings-4`
 
 ## Sources
 
-Painting content was gathered on 2026-10-26 from wayneherpich.com (the three gallery pages and all 61 painting pages). The bio, CV, email and location come from the artist's resume. The Instagram link is the account linked from wayneherpich.com, @wayne_herpich_art.
+Painting content was gathered on 2026-10-26 from wayneherpich.com (the three gallery pages and all 61 painting pages). The bio, CV and email come from the artist's resume. The Instagram link is the account linked from wayneherpich.com, @wayne_herpich_art.

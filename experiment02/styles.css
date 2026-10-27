@@ -448,21 +448,34 @@ h1, h2, h3 { font-weight: 400; }
 
 /* ---------- Contact ---------- */
 
-.contact-intro { max-width: 40ch; font-size: clamp(17px, 1.5vw, 19px); font-weight: 300; line-height: 1.6; }
-
-.contact-list { margin: 0; border-top: 1px solid var(--line); }
-.contact-row {
+.contact-list {
+  margin: 0;
+  max-width: 1000px;
   display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr);
-  gap: 16px;
-  align-items: baseline;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--line);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 40px clamp(32px, 6vw, 96px);
 }
-.contact-row dt { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-.contact-row dd { margin: 0; font-size: clamp(18px, 2vw, 24px); font-weight: 300; overflow-wrap: anywhere; }
-.contact-row a:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-
-@media (max-width: 560px) {
-  .contact-row { grid-template-columns: 1fr; gap: 4px; }
+.contact-item {
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
 }
+.contact-item dt {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.contact-item dd {
+  margin: 0;
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 300;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.contact-item a {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.3s ease;
+}
+.contact-item a:hover { background-size: 100% 1px; }

@@ -40,7 +40,6 @@
 window.SITE = {
   artist: {
     name: "Wayne Herpich",
-    location: "Torrington, Connecticut",
     email: "wayneherpich@gmail.com",
     instagram: "https://www.instagram.com/wayne_herpich_art/",
   },
