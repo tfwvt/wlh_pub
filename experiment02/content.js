@@ -46,8 +46,10 @@ window.SITE = {
   },
 
   bio: [
-    "Wayne Herpich is a painter who lives and works in Torrington, Connecticut. He studied painting at Pratt Institute (BFA, 1967) and the Yale School of Art and Architecture (MFA, 1969).",
-    "His work has been shown in solo and group exhibitions in New York and Connecticut, and written about in Art in America and ARTnews.",
+    "Wayne Herpich is a Connecticut-based artist whose practice spans more than five decades. A graduate of Pratt Institute (BFA) and Yale School of Art (MFA), Herpich has maintained a continuous studio practice, exploring abstract and nonrepresentational painting, drawing, photography, and sculpture. His work encompasses a wide range of materials, processes, forms, and degrees of abstraction. Herpich has shown in exhibitions throughout New York and Connecticut, including solo exhibitions at Blackston Gallery in Manhattan, which received critical attention in Art in America.",
+    "During the 1980s and 1990s Herpich produced numerous small-scale non-representational oil paintings on wood, using a painting knife rather than a traditional brush. By the mid-1990s, he had expanded this practice to much larger canvases. This continued to the early 2000s when his technique evolved to applying the paint to the left half of the canvas with his forehand and to the right half of the canvas with his backhand.",
+    "In the early 2000s while producing his large canvas painting, Herpich began developing monumental works measuring 108 by 48 inches. These double-sided works initially used black or colored oil paint on canvas, and later expanded to include black permanent marker on cotton duck. He continues to produce the marker pieces today. Suspended freely in space, these large-scale works move beyond the traditional wall mounted format.",
+    "During the time Herpich was evolving his aforementioned paintings, he was simultaneously working on rope sculptures (from the early 1970s until approximately 2010), long scroll photographs (from 1990 to 2000), and abstract self-portraits (from 2000 to present day).",
   ],
 
   cv: [
