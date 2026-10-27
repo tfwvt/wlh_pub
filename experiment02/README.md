@@ -10,7 +10,7 @@ It's a static site with no build step: open `index.html`, or serve the folder wi
 
 | Page | What it shows |
 | --- | --- |
-| `index.html` | Home: a large slideshow of selected paintings, then the list of series |
+| `index.html` | Home: the black-and-white photograph from the old site's front page, then the list of series |
 | `work.html` | Work: one card per series |
 | `series.html?s=paintings-1` | One page per series: the paintings hung on a "wall", tabs to the other series, and previous/next links. Click a painting to see it full screen |
 | `about.html` | Bio, photograph and CV |
@@ -22,8 +22,8 @@ There is one `series.html` for all the series. The `?s=` part of the address cho
 
 | File | What it is |
 | --- | --- |
-| `content.js` | **All the content.** Artist details, home slideshow, every series of paintings, the bio and the CV |
-| `site.js` | Builds every page from `content.js`: header, footer, slideshow, series cards, the painting wall and the full-screen viewer |
+| `content.js` | **All the content.** Artist details, home photograph, every series of paintings, the bio and the CV |
+| `site.js` | Builds every page from `content.js`: header, footer, series cards, the painting wall and the full-screen viewer |
 | `styles.css` | Design tokens (colours, font, spacing) at the top, then styles for each page |
 | `*.html` | Page shells. They are all the same except for the title and `data-page` |
 
@@ -56,7 +56,7 @@ The new series automatically gets its own page (here `series.html?s=paintings-4`
 
 ## Other updates
 
-- **Home slideshow:** list file names in `home.slides`. Each must also appear in one of the sections, so its caption can link to that series. `secondsPerSlide` sets the speed.
+- **Home photograph:** `home.image`.
 - **Bio and CV:** edit `bio` and `cv`, the same way as in experiment01. Copy a line to add a show or review (newest first), add `url: "https://..."` to link one, or copy a whole `{ heading: ..., items: [...] }` block for a new group.
 - **Contact details:** `artist` at the top. Delete a line to hide it. A `phone: "..."` line can be added to show a phone number.
 - **About photo:** `aboutImage`.
@@ -65,7 +65,6 @@ The new series automatically gets its own page (here `series.html?s=paintings-4`
 
 - On series pages the paintings are sized by area rather than all at the same height, so a tall, narrow strip appears taller and a wide piece wider. Each painting sits at the bottom of its grid cell, so a row shares a baseline like a hang on a wall.
 - The full-screen viewer is white, like the walls. Use the arrow keys or swipe to move between paintings, and Esc or Close to return.
-- The slideshow can be paused, and it doesn't auto-advance for visitors who have reduced motion turned on.
 
 ## Sources
 

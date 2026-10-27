@@ -26,8 +26,7 @@
  *       medium: "Oil on canvas", size: "40 × 30 in" },
  *
  * HOME PAGE
- *   `home.slides` lists the paintings shown one after another on the home
- *   page, by file name. Each must also be listed in one of the sections.
+ *   `home.image` is the large photograph at the top of the home page.
  *
  * ABOUT AND CV
  *   `bio` is the paragraph(s) at the top of the About page. `cv` is a list
@@ -107,16 +106,8 @@ window.SITE = {
   imageBase: "https://wayneherpich.com/images/",
 
   home: {
-    // Paintings shown on the home page, in order.
-    slides: [
-      "DSC_5943_0002.jpg",
-      "13_IMG_6961.jpg",
-      "black_white_4.jpg",
-      "08_IMG_6963.jpg",
-      "DSC_5963_0012.jpg",
-      "black_white_2.jpg",
-    ],
-    secondsPerSlide: 6,
+    // The large photograph at the top of the home page (the old site's front page).
+    image: { file: "new-title-page.jpg", width: 800, height: 530, alt: "Black-and-white photograph of a house and overgrown yard, with a dog looking out of a basement window" },
   },
 
   // Photograph shown on the About page (it was the old site's front page).

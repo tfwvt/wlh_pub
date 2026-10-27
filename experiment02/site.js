@@ -129,85 +129,22 @@
   /* ---------- Home ---------- */
 
   function renderHome() {
-    const main = $("#main");
-    const slides = ((SITE.home && SITE.home.slides) || []).map(findImage).filter(Boolean);
-    if (!slides.length) slides.push(...sections.map((s) => ({ section: s, index: 0, img: s.images[0] })));
-    const seconds = (SITE.home && SITE.home.secondsPerSlide) || 6;
-    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const photo = SITE.home && SITE.home.image;
+    const photoEl = photo && h("img", {
+      alt: photo.alt || "",
+      width: photo.width,
+      height: photo.height,
+      fetchpriority: "high",
+      decoding: "async",
+    });
+    if (photoEl) withRetry(photoEl, srcOf(photo), () => photoEl.closest("figure").remove());
 
-    const slideEls = slides.map((sl) =>
-      h("a", { class: "slide", href: seriesUrl(sl.section, sl.index + 1), tabindex: "-1" },
-        h("img", { alt: altText(sl.section, sl.img, sl.index), decoding: "async" })));
-    const caption = h("p", { class: "slide-caption", "aria-live": "polite" });
-    const count = h("span", { class: "slide-count" });
-    const playBtn = h("button", { type: "button" });
-    const prevBtn = h("button", { type: "button", "aria-label": "Previous painting" }, "←");
-    const nextBtn = h("button", { type: "button", "aria-label": "Next painting" }, "→");
-
-    main.append(
+    $("#main").append(
       h("h1", { class: "sr-only" }, `${artist.name} — Paintings`),
-      h("section", { class: "wrap slideshow", "aria-label": "Selected paintings" },
-        h("div", { class: "slides" }, slideEls),
-        h("div", { class: "slide-bar" },
-          caption,
-          h("div", { class: "slide-controls" },
-            slides.length > 1 && [prevBtn, count, nextBtn, playBtn]))),
+      photoEl && h("figure", { class: "wrap home-image" }, photoEl),
       h("section", { class: "wrap home-series", "aria-labelledby": "home-series-title" },
         h("h2", { class: "label", id: "home-series-title" }, "Series"),
         seriesCards()));
-
-    let current = -1;
-    let timer = null;
-    let playing = slides.length > 1 && !reduceMotion;
-
-    const load = (i) => {
-      const img = $("img", slideEls[i]);
-      if (!img.getAttribute("src")) withRetry(img, srcOf(slides[i].img));
-      return img;
-    };
-
-    function show(i) {
-      i = (i + slides.length) % slides.length;
-      const img = load(i);
-      load((i + 1) % slides.length); // fetch the next one in the background
-      const reveal = () => {
-        slideEls.forEach((el, n) => {
-          el.classList.toggle("is-active", n === i);
-          el.tabIndex = n === i ? 0 : -1;
-        });
-        current = i;
-        const sl = slides[i];
-        caption.replaceChildren(h("a", { class: "link-line", href: seriesUrl(sl.section) }, sl.section.title));
-        if (sl.img.title) caption.append(h("span", { class: "muted" }, " — ", details(sl.img)));
-        count.textContent = `${pad(i + 1)} / ${pad(slides.length)}`;
-        schedule();
-      };
-      if (img.complete && img.naturalWidth) reveal();
-      else {
-        img.addEventListener("load", () => { if (pending === i) reveal(); }, { once: true });
-        pending = i;
-      }
-    }
-    let pending = null;
-
-    function schedule() {
-      clearTimeout(timer);
-      if (playing) timer = setTimeout(() => show(current + 1), seconds * 1000);
-    }
-    function setPlaying(on) {
-      playing = on;
-      playBtn.textContent = on ? "Pause" : "Play";
-      playBtn.setAttribute("aria-label", on ? "Pause slideshow" : "Play slideshow");
-      schedule();
-    }
-
-    prevBtn.addEventListener("click", () => show(current - 1));
-    nextBtn.addEventListener("click", () => show(current + 1));
-    playBtn.addEventListener("click", () => setPlaying(!playing));
-    document.addEventListener("visibilitychange", () => (document.hidden ? clearTimeout(timer) : schedule()));
-
-    setPlaying(playing);
-    show(0);
   }
 
   /* ---------- Work ---------- */
