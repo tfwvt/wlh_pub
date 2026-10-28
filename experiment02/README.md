@@ -57,7 +57,7 @@ The new series automatically gets its own page (here `series.html?s=paintings-4`
 ## Other updates
 
 - **Home photograph:** `home.image`.
-- **Bio and CV:** edit `bio` and `cv`, the same way as in experiment01. To link words in the bio (opening in a new tab), write `[the words](https://...)`. Copy a line to add a show or review (newest first), add `url: "https://..."` to link one, or copy a whole `{ heading: ..., items: [...] }` block for a new group. A group can instead hold smaller groups (`groups: [...]`), shown as subheadings under a slightly larger heading, as Exhibitions and Bibliography do.
+- **Bio and CV:** edit `bio` and `cv`, the same way as in experiment01. To link words in the bio (opening in a new tab), write `[the words](https://...)`. Copy a line to add a show or review (newest first), add `url: "https://..."` to link one, or copy a whole `{ heading: ..., items: [...] }` block for a new group. A group can instead hold smaller groups (`groups: [...]`), shown as subheadings, as Exhibitions and Bibliography do.
 - **Contact details:** `artist` at the top. Delete a line to hide it. A `phone: "..."` line can be added to show a phone number.
 - **About photo:** `aboutImage`.
 - **Contact photo:** `contactImage`. Delete it to show the Contact page without a photo.
