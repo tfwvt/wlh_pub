@@ -147,7 +147,7 @@
     $("#main").append(
       h("div", { class: "wrap" },
         h("header", { class: "page-head" },
-          h("h1", { class: "page-title" }, "Work"),
+          h("h1", { class: "sr-only" }, "Work"),
           h("p", { class: "page-meta" },
             `${plural(totalWorks, "painting")} in ${plural(sections.length, "series", "series")}`)),
         seriesCards()));
