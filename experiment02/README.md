@@ -10,11 +10,11 @@ It's a static site with no build step: open `index.html`, or serve the folder wi
 
 | Page | What it shows |
 | --- | --- |
-| `index.html` | Home: the black-and-white photograph from the old site's front page, then the list of series |
+| `index.html` | Home: a large photograph of the paintings installed in a gallery, then the list of series |
 | `work.html` | Work: one card per series |
 | `series.html?s=paintings-1` | One page per series: the paintings hung on a "wall", tabs to the other series, and previous/next links. Click a painting to see it full screen |
 | `about.html` | Bio, photograph and CV |
-| `contact.html` | Email and Instagram |
+| `contact.html` | A photograph, then email and Instagram |
 
 There is one `series.html` for all the series. The `?s=` part of the address chooses which series it shows, so a new series doesn't need a new file. Each painting also has its own link, e.g. `series.html?s=paintings-3#12`.
 
@@ -57,9 +57,10 @@ The new series automatically gets its own page (here `series.html?s=paintings-4`
 ## Other updates
 
 - **Home photograph:** `home.image`.
-- **Bio and CV:** edit `bio` and `cv`, the same way as in experiment01. Copy a line to add a show or review (newest first), add `url: "https://..."` to link one, or copy a whole `{ heading: ..., items: [...] }` block for a new group.
+- **Bio and CV:** edit `bio` and `cv`, the same way as in experiment01. To link words in the bio (opening in a new tab), write `[the words](https://...)`. Copy a line to add a show or review (newest first), add `url: "https://..."` to link one, or copy a whole `{ heading: ..., items: [...] }` block for a new group.
 - **Contact details:** `artist` at the top. Delete a line to hide it. A `phone: "..."` line can be added to show a phone number.
 - **About photo:** `aboutImage`.
+- **Contact photo:** `contactImage`. Delete it to show the Contact page without a photo.
 
 ## Design notes
 

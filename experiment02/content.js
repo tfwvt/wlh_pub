@@ -29,7 +29,8 @@
  *   `home.image` is the large photograph at the top of the home page.
  *
  * ABOUT AND CV
- *   `bio` is the paragraph(s) at the top of the About page. `cv` is a list
+ *   `bio` is the paragraph(s) at the top of the About page. To make words in
+ *   it a link (opening in a new tab), write [the words](https://...). `cv` is a list
  *   of groups (Education, Exhibitions, ...), shown in order. To add a show or
  *   a review, copy a line in the right group, newest first. To add a whole
  *   new group, copy a `{ heading: ... }` block. In groups with
@@ -45,7 +46,7 @@ window.SITE = {
   },
 
   bio: [
-    "Wayne Herpich is a Connecticut-based artist whose practice spans more than five decades. A graduate of Pratt Institute (BFA) and Yale School of Art (MFA), Herpich has maintained a continuous studio practice, exploring abstract and nonrepresentational painting, drawing, photography, and sculpture. His work encompasses a wide range of materials, processes, forms, and degrees of abstraction. Herpich has shown in exhibitions throughout New York and Connecticut, including solo exhibitions at Blackston Gallery in Manhattan, which received critical attention in Art in America.",
+    "Wayne Herpich is a Connecticut-based artist whose practice spans more than five decades. A graduate of Pratt Institute (BFA) and Yale School of Art (MFA), Herpich has maintained a continuous studio practice, exploring abstract and nonrepresentational painting, drawing, photography, and sculpture. His work encompasses a wide range of materials, processes, forms, and degrees of abstraction. Herpich has shown in exhibitions throughout New York and Connecticut, including solo exhibitions at Blackston Gallery in Manhattan, which received critical attention in [Art in America](https://www.artnews.com/art-in-america/aia-reviews/wayne-herpich-61684/).",
     "During the 1980s and 1990s Herpich produced numerous small-scale non-representational oil paintings on wood, using a painting knife rather than a traditional brush. By the mid-1990s, he had expanded this practice to much larger canvas pieces. This continued to the early 2000s when his technique evolved by applying the paint to the left half of the canvas with his forehand and to the right half of the canvas with his backhand.",
     "In the early 2000s while still producing his large canvas paintings, Herpich began developing monumental works measuring 108 by 48 inches. These double-sided works initially used black or colored oil paint on canvas, and later evolved to using only black permanent marker. He continues to produce the marker pieces today. Suspended freely in space, these large-scale works move beyond the traditional wall mounted format.",
     "During the time Herpich was evolving his aforementioned paintings, he was simultaneously working on rope sculptures (from the early 1970s until approximately 2010), long scroll photographs (from 1990 to 2000), and abstract self-portraits (from 2000 to present day).",
@@ -107,12 +108,15 @@ window.SITE = {
   imageBase: "https://wayneherpich.com/images/",
 
   home: {
-    // The large photograph at the top of the home page (the old site's front page).
-    image: { file: "new-title-page.jpg", width: 800, height: 530, alt: "Black-and-white photograph of a house and overgrown yard, with a dog looking out of a basement window" },
+    // The large photograph at the top of the home page.
+    image: { file: "home_page.jpg", width: 980, height: 654, alt: "Large painted canvases hanging from the ceiling in a gallery, with a visitor looking at them" },
   },
 
   // Photograph shown on the About page (it was the old site's front page).
   aboutImage: { file: "new-title-page.jpg", width: 800, height: 530, alt: "Black-and-white photograph of a house and overgrown yard, with a dog looking out of a basement window" },
+
+  // Photograph at the top of the Contact page.
+  contactImage: { file: "contact_page.jpg", width: 980, height: 735, alt: "Black-and-white photograph of the artist standing in his studio in front of a large painting of a tree" },
 
   sections: [
     {

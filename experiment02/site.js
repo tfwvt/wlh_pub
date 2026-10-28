@@ -355,6 +355,18 @@
 
   /* ---------- About ---------- */
 
+  // Turns [text](https://...) in a bio paragraph into a link that opens in a new tab.
+  function withLinks(text) {
+    const parts = [];
+    let last = 0;
+    for (const m of String(text).matchAll(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g)) {
+      parts.push(text.slice(last, m.index), h("a", { href: m[2], target: "_blank", rel: "noopener" }, m[1]));
+      last = m.index + m[0].length;
+    }
+    parts.push(text.slice(last));
+    return parts;
+  }
+
   function renderAbout() {
     const photo = SITE.aboutImage;
     const photoEl = photo && h("img", { alt: photo.alt || "", width: photo.width, height: photo.height, loading: "lazy", decoding: "async" });
@@ -364,10 +376,10 @@
 
     $("#main").append(
       h("div", { class: "wrap" },
-        h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "About")),
+        h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "Biography")),
         h("div", { class: "two-col" },
           h("div", null,
-            h("div", { class: "bio" }, [].concat(SITE.bio || []).map((t) => h("p", null, t))),
+            h("div", { class: "bio" }, [].concat(SITE.bio || []).map((t) => h("p", null, withLinks(t)))),
             photoEl && h("figure", { class: "about-photo" }, photoEl)),
           h("div", { class: "cv" },
             groups.map((g) =>
@@ -390,9 +402,13 @@
   function renderContact() {
     const item = (label, value) => value && h("div", { class: "contact-item" }, h("dt", null, label), h("dd", null, value));
     const igHandle = artist.instagram && "@" + artist.instagram.replace(/\/+$/, "").split("/").pop();
+    const photo = SITE.contactImage;
+    const photoEl = photo && h("img", { alt: photo.alt || "", width: photo.width, height: photo.height, fetchpriority: "high", decoding: "async" });
+    if (photoEl) withRetry(photoEl, srcOf(photo), () => photoEl.closest("figure").remove());
 
     $("#main").append(
       h("div", { class: "wrap" },
+        photoEl && h("figure", { class: "contact-photo" }, photoEl),
         h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "Contact")),
         h("dl", { class: "contact-list" },
           item("Email", artist.email && h("a", { href: `mailto:${artist.email}?subject=${encodeURIComponent("Inquiry from wayneherpich.com")}` }, artist.email)),

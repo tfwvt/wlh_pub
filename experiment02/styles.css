@@ -421,6 +421,8 @@ h1, h2, h3 { font-weight: 400; }
   line-height: 1.6;
 }
 .bio p + p { margin-top: 1em; }
+.bio a { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.bio a:hover { text-decoration-color: currentColor; }
 
 .about-photo { margin: clamp(32px, 4vw, 48px) 0 0; }
 .about-photo img { width: 100%; height: auto; background: var(--wall); }
@@ -447,6 +449,15 @@ h1, h2, h3 { font-weight: 400; }
 }
 
 /* ---------- Contact ---------- */
+
+.contact-photo { margin: 0; padding-top: clamp(8px, 3vw, 40px); }
+.contact-photo img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100svh - var(--header-h) - 64px);
+  background: var(--wall);
+}
 
 .contact-list {
   margin: 0;
