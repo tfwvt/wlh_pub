@@ -41,7 +41,7 @@
 window.SITE = {
   artist: {
     name: "Wayne Herpich",
-    email: "wayneherpich@gmail.com",
+    email: "wayne@wayneherpich.com",
     instagram: "https://www.instagram.com/wayne_herpich_art/",
   },
 

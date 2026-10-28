@@ -469,12 +469,11 @@ h1, h2, h3 { font-weight: 400; }
     padding-top: clamp(8px, 3vw, 40px);
   }
   .contact-layout .contact-photo { padding-top: 0; }
-  .contact-layout:has(.contact-photo) .page-head { padding-top: 0; }
-  .contact-layout:has(.contact-photo) .contact-list { grid-template-columns: 1fr; }
+  .contact-layout:has(.contact-photo) .contact-list { grid-template-columns: 1fr; margin-top: 0; }
 }
 
 .contact-list {
-  margin: 0;
+  margin: clamp(32px, 6vw, 88px) 0 0;
   max-width: 1000px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));

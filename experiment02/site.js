@@ -410,7 +410,7 @@
       h("div", { class: "wrap contact-layout" },
         photoEl && h("figure", { class: "contact-photo" }, photoEl),
         h("div", { class: "contact-text" },
-          h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "Contact")),
+          h("h1", { class: "sr-only" }, "Contact"),
           h("dl", { class: "contact-list" },
             item("Email", artist.email && h("a", { href: `mailto:${artist.email}?subject=${encodeURIComponent("Inquiry from wayneherpich.com")}` }, artist.email)),
             item("Phone", artist.phone && h("a", { href: "tel:" + artist.phone.replace(/[^\d+]/g, "") }, artist.phone)),
