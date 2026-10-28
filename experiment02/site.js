@@ -43,7 +43,6 @@
     .filter((s) => s && Array.isArray(s.images) && s.images.length)
     .map((s, i) => ({ ...s, id: s.id || slug(s.title) || `series-${i + 1}`, index: i }));
 
-  const totalWorks = sections.reduce((n, s) => n + s.images.length, 0);
   const seriesUrl = (s, n) => `series.html?s=${encodeURIComponent(s.id)}${n ? "#" + n : ""}`;
 
   function findImage(file) {
@@ -145,11 +144,8 @@
 
   function renderWork() {
     $("#main").append(
-      h("div", { class: "wrap" },
-        h("header", { class: "page-head" },
-          h("h1", { class: "sr-only" }, "Work"),
-          h("p", { class: "page-meta" },
-            `${plural(totalWorks, "painting")} in ${plural(sections.length, "series", "series")}`)),
+      h("div", { class: "wrap work-page" },
+        h("h1", { class: "sr-only" }, "Work"),
         seriesCards()));
   }
 
@@ -366,7 +362,24 @@
     const photoEl = photo && h("img", { alt: photo.alt || "", width: photo.width, height: photo.height, loading: "lazy", decoding: "async" });
     if (photoEl) withRetry(photoEl, srcOf(photo), () => photoEl.closest("figure").remove());
 
-    const groups = (SITE.cv || []).filter((g) => g && g.items && g.items.length);
+    // A group lists `items`, or holds smaller `groups` under its heading (e.g. Bibliography).
+    const hasItems = (g) => g && ((g.items && g.items.length) || (g.groups || []).some(hasItems));
+    const groups = (SITE.cv || []).filter(hasItems);
+
+    const cvGroup = (g, sub) =>
+      h("section", { class: `cv-group${sub ? " cv-subgroup" : ""}${g.quoteTitles ? " quoted" : ""}` },
+        sub ? h("h3", { class: "cv-subhead" }, g.heading) : h("h2", { class: "label" }, g.heading),
+        g.items && g.items.length && h("ul", { class: "cv-list" },
+          g.items.map((item) => {
+            const title = g.quoteTitles ? `“${item.title}”` : item.title;
+            return h("li", { class: "cv-item" },
+              h("span", { class: "cv-year" }, item.year),
+              h("span", null,
+                h("span", { class: "cv-title" },
+                  item.url ? h("a", { href: item.url, target: "_blank", rel: "noopener" }, title) : title),
+                item.detail && h("span", { class: "cv-detail" }, item.detail)));
+          })),
+        (g.groups || []).filter(hasItems).map((s) => cvGroup(s, true)));
 
     $("#main").append(
       h("div", { class: "wrap" },
@@ -375,20 +388,7 @@
           h("div", null,
             h("div", { class: "bio" }, [].concat(SITE.bio || []).map((t) => h("p", null, withLinks(t)))),
             photoEl && h("figure", { class: "about-photo" }, photoEl)),
-          h("div", { class: "cv" },
-            groups.map((g) =>
-              h("section", { class: `cv-group${g.quoteTitles ? " quoted" : ""}` },
-                h("h2", { class: "label" }, g.heading),
-                h("ul", { class: "cv-list" },
-                  g.items.map((item) => {
-                    const title = g.quoteTitles ? `“${item.title}”` : item.title;
-                    return h("li", { class: "cv-item" },
-                      h("span", { class: "cv-year" }, item.year),
-                      h("span", null,
-                        h("span", { class: "cv-title" },
-                          item.url ? h("a", { href: item.url, target: "_blank", rel: "noopener" }, title) : title),
-                        item.detail && h("span", { class: "cv-detail" }, item.detail)));
-                  }))))))));
+          h("div", { class: "cv" }, groups.map((g) => cvGroup(g, false))))));
   }
 
   /* ---------- Contact ---------- */

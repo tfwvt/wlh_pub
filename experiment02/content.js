@@ -33,7 +33,9 @@
  *   it a link (opening in a new tab), write [the words](https://...). `cv` is a list
  *   of groups (Education, Exhibitions, ...), shown in order. To add a show or
  *   a review, copy a line in the right group, newest first. To add a whole
- *   new group, copy a `{ heading: ... }` block. In groups with
+ *   new group, copy a `{ heading: ... }` block. A group can hold smaller
+ *   groups (`groups: [...]` instead of `items`), shown as subheadings, as
+ *   Bibliography does. In groups with
  *   `quoteTitles: true` (press), titles are shown in quotation marks. Any
  *   line can also have a `url` (e.g. a link to the review) to make its title
  *   a link.
@@ -84,22 +86,27 @@ window.SITE = {
       ],
     },
     {
-      heading: "Featured Press",
-      quoteTitles: true,
-      items: [
-        { year: 2014, title: "Wayne Herpich", detail: "Faye Hirsch, Art in America" },
-      ],
-    },
-    {
-      heading: "Selected Mentions and Reviews",
-      quoteTitles: true,
-      items: [
-        { year: 2016, title: "Wayne Herpich: Further Notice at Blackson New York", detail: "ARTnews" },
-        { year: 2016, title: "More More More Opens at the Flinn Gallery", detail: "Karen Sheer, Greenwich Free Press" },
-        { year: 2014, title: "Exhibition at Morgan Lehman Explores the Margins of Painterly Process", detail: "ArtDaily" },
-        { year: 2014, title: "Wayne Herpich", detail: "Jessica Jane Russel, Jessica Jane" },
-        { year: 2014, title: "Like Wildfire", detail: "John Haber, Haber Arts" },
-        { year: 2013, title: "Torrington Artist on Display", detail: "Ryan Flinn, The Register Citizen" },
+      heading: "Bibliography",
+      groups: [
+        {
+          heading: "Featured Press",
+          quoteTitles: true,
+          items: [
+            { year: 2014, title: "Wayne Herpich", detail: "Faye Hirsch, Art in America" },
+          ],
+        },
+        {
+          heading: "Selected Mentions and Reviews",
+          quoteTitles: true,
+          items: [
+            { year: 2016, title: "Wayne Herpich: Further Notice at Blackson New York", detail: "ARTnews" },
+            { year: 2016, title: "More More More Opens at the Flinn Gallery", detail: "Karen Sheer, Greenwich Free Press" },
+            { year: 2014, title: "Exhibition at Morgan Lehman Explores the Margins of Painterly Process", detail: "ArtDaily" },
+            { year: 2014, title: "Wayne Herpich", detail: "Jessica Jane Russel, Jessica Jane" },
+            { year: 2014, title: "Like Wildfire", detail: "John Haber, Haber Arts" },
+            { year: 2013, title: "Torrington Artist on Display", detail: "Ryan Flinn, The Register Citizen" },
+          ],
+        },
       ],
     },
   ],

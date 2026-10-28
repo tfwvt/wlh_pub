@@ -145,7 +145,7 @@ h1, h2, h3 { font-weight: 400; }
   color: var(--muted);
 }
 
-/* ---------- Page heading (Work, series, About, Contact) ---------- */
+/* ---------- Page heading (series, About) ---------- */
 
 .page-head {
   display: flex;
@@ -181,6 +181,8 @@ h1, h2, h3 { font-weight: 400; }
 }
 
 /* ---------- Series cards (Work page) ---------- */
+
+.work-page { padding-top: clamp(8px, 3vw, 40px); }
 
 .series-cards {
   list-style: none;
@@ -424,6 +426,13 @@ h1, h2, h3 { font-weight: 400; }
 
 .cv { display: grid; gap: clamp(40px, 4.5vw, 60px); }
 .cv-group .label { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.cv-subhead {
+  margin: 0;
+  padding: 24px 0 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 500;
+}
 .cv-list { list-style: none; margin: 0; padding: 0; }
 .cv-item {
   display: grid;
