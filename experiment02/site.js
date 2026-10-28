@@ -407,13 +407,14 @@
     if (photoEl) withRetry(photoEl, srcOf(photo), () => photoEl.closest("figure").remove());
 
     $("#main").append(
-      h("div", { class: "wrap" },
+      h("div", { class: "wrap contact-layout" },
         photoEl && h("figure", { class: "contact-photo" }, photoEl),
-        h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "Contact")),
-        h("dl", { class: "contact-list" },
-          item("Email", artist.email && h("a", { href: `mailto:${artist.email}?subject=${encodeURIComponent("Inquiry from wayneherpich.com")}` }, artist.email)),
-          item("Phone", artist.phone && h("a", { href: "tel:" + artist.phone.replace(/[^\d+]/g, "") }, artist.phone)),
-          item("Instagram", igHandle && h("a", { href: artist.instagram, target: "_blank", rel: "noopener" }, igHandle)))));
+        h("div", { class: "contact-text" },
+          h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "Contact")),
+          h("dl", { class: "contact-list" },
+            item("Email", artist.email && h("a", { href: `mailto:${artist.email}?subject=${encodeURIComponent("Inquiry from wayneherpich.com")}` }, artist.email)),
+            item("Phone", artist.phone && h("a", { href: "tel:" + artist.phone.replace(/[^\d+]/g, "") }, artist.phone)),
+            item("Instagram", igHandle && h("a", { href: artist.instagram, target: "_blank", rel: "noopener" }, igHandle))))));
   }
 
   /* ---------- Go ---------- */

@@ -459,6 +459,20 @@ h1, h2, h3 { font-weight: 400; }
   background: var(--wall);
 }
 
+/* Desktop: the photo on the left, the heading and details beside it. */
+@media (min-width: 861px) {
+  .contact-layout:has(.contact-photo) {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+    padding-top: clamp(8px, 3vw, 40px);
+  }
+  .contact-layout .contact-photo { padding-top: 0; }
+  .contact-layout:has(.contact-photo) .page-head { padding-top: 0; }
+  .contact-layout:has(.contact-photo) .contact-list { grid-template-columns: 1fr; }
+}
+
 .contact-list {
   margin: 0;
   max-width: 1000px;
