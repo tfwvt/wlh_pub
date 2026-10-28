@@ -128,8 +128,8 @@ window.SITE = {
   // Photograph shown on the About page (it was the old site's front page).
   aboutImage: { file: "new-title-page.jpg", width: 800, height: 530, alt: "Black-and-white photograph of a house and overgrown yard, with a dog looking out of a basement window" },
 
-  // Photograph at the top of the Contact page.
-  contactImage: { file: "contact_page.jpg", width: 980, height: 735, alt: "Black-and-white photograph of the artist standing in his studio in front of a large painting of a tree" },
+  // Image at the top of the Contact page.
+  contactImage: { file: "contact_self_portrait.jpg", width: 706, height: 980, alt: "Self-portrait by Wayne Herpich: a painted head and shoulders in greens and purples, wearing glasses" },
 
   sections: [
     {

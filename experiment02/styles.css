@@ -478,7 +478,7 @@ h1, h2, h3 { font-weight: 400; }
 @media (min-width: 861px) {
   .contact-layout:has(.contact-photo) {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-columns: auto minmax(320px, 1fr);
     gap: clamp(40px, 6vw, 96px);
     align-items: start;
     padding-top: clamp(8px, 3vw, 40px);
