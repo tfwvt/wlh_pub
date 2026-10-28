@@ -103,13 +103,10 @@
   function renderFooter() {
     $(".site-footer").append(
       h("div", { class: "wrap footer-inner" },
-        h("p", null, `© ${new Date().getFullYear()} ${artist.name}`),
-        h("div", { class: "footer-links" },
-          artist.email && h("a", { href: `mailto:${artist.email}` }, "Email"),
-          artist.instagram && h("a", { href: artist.instagram, target: "_blank", rel: "noopener" }, "Instagram"))));
+        h("p", null, `© ${new Date().getFullYear()} ${artist.name}`)));
   }
 
-  /* ---------- Series cards (Work page and home) ---------- */
+  /* ---------- Series cards (Work page) ---------- */
 
   function seriesCards() {
     return h("ul", { class: "series-cards" },
