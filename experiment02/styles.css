@@ -182,10 +182,7 @@ h1, h2, h3 { font-weight: 400; }
   background: var(--wall);
 }
 
-.home-series { padding-top: clamp(64px, 9vw, 120px); }
-.home-series .label { padding-bottom: 16px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
-
-/* ---------- Series cards (Work page and home) ---------- */
+/* ---------- Series cards (Work page) ---------- */
 
 .series-cards {
   list-style: none;

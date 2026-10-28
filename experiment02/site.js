@@ -141,10 +141,7 @@
 
     $("#main").append(
       h("h1", { class: "sr-only" }, `${artist.name} — Paintings`),
-      photoEl && h("figure", { class: "wrap home-image" }, photoEl),
-      h("section", { class: "wrap home-series", "aria-labelledby": "home-series-title" },
-        h("h2", { class: "label", id: "home-series-title" }, "Series"),
-        seriesCards()));
+      photoEl && h("figure", { class: "wrap home-image" }, photoEl));
   }
 
   /* ---------- Work ---------- */

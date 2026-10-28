@@ -10,7 +10,7 @@ It's a static site with no build step: open `index.html`, or serve the folder wi
 
 | Page | What it shows |
 | --- | --- |
-| `index.html` | Home: a large photograph of the paintings installed in a gallery, then the list of series |
+| `index.html` | Home: a large photograph of the paintings installed in a gallery |
 | `work.html` | Work: one card per series |
 | `series.html?s=paintings-1` | One page per series: the paintings hung on a "wall", tabs to the other series, and previous/next links. Click a painting to see it full screen |
 | `about.html` | Bio, photograph and CV |
@@ -46,7 +46,7 @@ Edit `content.js` only:
 },
 ```
 
-The new series automatically gets its own page (here `series.html?s=paintings-4`), a card on the Work and home pages, a tab on every series page and previous/next links.
+The new series automatically gets its own page (here `series.html?s=paintings-4`), a card on the Work page, a tab on every series page and previous/next links.
 
 - `file` is the image's name in `https://wayneherpich.com/images/` (set once as `imageBase`). Upload new photos there the same way as before. For an image hosted anywhere else, use `src: "https://..."` instead of `file`.
 - `width` and `height` (in pixels) are optional. With them, the wall is laid out before the photos arrive. Without them, the page reads each photo's size as it loads.
