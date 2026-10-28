@@ -92,7 +92,9 @@
       h("a", { href, "aria-current": current === id ? "page" : null }, text);
     $(".site-header").append(
       h("div", { class: "wrap header-inner" },
-        h("a", { class: "wordmark", href: "index.html" }, artist.name),
+        h("a", { class: "wordmark", href: "index.html" },
+          artist.name,
+          artist.tagline && h("span", { class: "wordmark-tagline" }, artist.tagline)),
         h("nav", { class: "site-nav", "aria-label": "Main" },
           link("work.html", "work", "Work"),
           link("about.html", "about", "About"),

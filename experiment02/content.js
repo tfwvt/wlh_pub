@@ -43,6 +43,7 @@
 window.SITE = {
   artist: {
     name: "Wayne Herpich",
+    tagline: "Painting + Sculpture", // shown under the name in the header; delete to hide
     email: "wayne@wayneherpich.com",
     instagram: "https://www.instagram.com/wayne_herpich_art/",
   },
