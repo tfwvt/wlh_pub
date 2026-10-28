@@ -35,7 +35,7 @@
  *   a review, copy a line in the right group, newest first. To add a whole
  *   new group, copy a `{ heading: ... }` block. A group can hold smaller
  *   groups (`groups: [...]` instead of `items`), shown as subheadings, as
- *   Bibliography does. In groups with
+ *   Exhibitions and Bibliography do. In groups with
  *   `quoteTitles: true` (press), titles are shown in quotation marks. Any
  *   line can also have a `url` (e.g. a link to the review) to make its title
  *   a link.
@@ -63,26 +63,31 @@ window.SITE = {
       ],
     },
     {
-      heading: "Solo Exhibitions",
-      items: [
-        { year: 2020, title: "New Paintings", detail: "Ober Gallery, Kent, CT" },
-        { year: 2016, title: "Further Notice", detail: "Blackston Gallery, New York, NY" },
-        { year: 2014, title: "New Vision Display", detail: "Blackston Gallery, New York, NY" },
-        { year: 2013, title: "Solo Exhibition", detail: "The Switch Factory, Bantam, CT" },
-        { year: 2012, title: "Solo Exhibition", detail: "Chad Etting Gallery, Torrington, CT" },
-      ],
-    },
-    {
-      heading: "Selected Group Exhibitions",
-      items: [
-        { year: 2024, title: "Western Figures", detail: "Five Points Gallery, Torrington, CT" },
-        { year: 2019, title: "A Game", detail: "Five Points Gallery, Torrington, CT" },
-        { year: 2017, title: "Figure This", detail: "Five Points Gallery, Torrington, CT" },
-        { year: 2016, title: "More More More", detail: "Flinn Gallery, Greenwich, CT" },
-        { year: 2016, title: "Abstraction Part I", detail: "Five Points Gallery, Torrington, CT" },
-        { year: 2014, title: "Brushless", detail: "Morgan Lehman Gallery, New York, NY" },
-        { year: 2012, title: "The New Abstractionists VI", detail: "Walter Wickiser Gallery, New York, NY" },
-        { year: 2006, title: "The Small Panel Paintings", detail: "Walter Wickiser Gallery, New York, NY" },
+      heading: "Exhibitions",
+      groups: [
+        {
+          heading: "Solo Exhibitions",
+          items: [
+            { year: 2020, title: "New Paintings", detail: "Ober Gallery, Kent, CT" },
+            { year: 2016, title: "Further Notice", detail: "Blackston Gallery, New York, NY" },
+            { year: 2014, title: "New Vision Display", detail: "Blackston Gallery, New York, NY" },
+            { year: 2013, title: "Solo Exhibition", detail: "The Switch Factory, Bantam, CT" },
+            { year: 2012, title: "Solo Exhibition", detail: "Chad Etting Gallery, Torrington, CT" },
+          ],
+        },
+        {
+          heading: "Selected Group Exhibitions",
+          items: [
+            { year: 2024, title: "Western Figures", detail: "Five Points Gallery, Torrington, CT" },
+            { year: 2019, title: "A Game", detail: "Five Points Gallery, Torrington, CT" },
+            { year: 2017, title: "Figure This", detail: "Five Points Gallery, Torrington, CT" },
+            { year: 2016, title: "More More More", detail: "Flinn Gallery, Greenwich, CT" },
+            { year: 2016, title: "Abstraction Part I", detail: "Five Points Gallery, Torrington, CT" },
+            { year: 2014, title: "Brushless", detail: "Morgan Lehman Gallery, New York, NY" },
+            { year: 2012, title: "The New Abstractionists VI", detail: "Walter Wickiser Gallery, New York, NY" },
+            { year: 2006, title: "The Small Panel Paintings", detail: "Walter Wickiser Gallery, New York, NY" },
+          ],
+        },
       ],
     },
     {

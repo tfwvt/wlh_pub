@@ -426,6 +426,7 @@ h1, h2, h3 { font-weight: 400; }
 
 .cv { display: grid; gap: clamp(40px, 4.5vw, 60px); }
 .cv-group .label { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.cv-parent > .label { font-size: 15px; }
 .cv-subhead {
   margin: 0;
   padding: 24px 0 10px;

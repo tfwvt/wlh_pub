@@ -367,7 +367,7 @@
     const groups = (SITE.cv || []).filter(hasItems);
 
     const cvGroup = (g, sub) =>
-      h("section", { class: `cv-group${sub ? " cv-subgroup" : ""}${g.quoteTitles ? " quoted" : ""}` },
+      h("section", { class: `cv-group${sub ? " cv-subgroup" : ""}${g.groups ? " cv-parent" : ""}${g.quoteTitles ? " quoted" : ""}` },
         sub ? h("h3", { class: "cv-subhead" }, g.heading) : h("h2", { class: "label" }, g.heading),
         g.items && g.items.length && h("ul", { class: "cv-list" },
           g.items.map((item) => {
