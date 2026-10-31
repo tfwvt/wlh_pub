@@ -1,0 +1,520 @@
+/* ==========================================================================
+   Wayne Herpich — gallery site
+   Design tokens first, then shared parts, then each page.
+   ========================================================================== */
+
+:root {
+  --bg: #ffffff;
+  --wall: #f4f4f2;        /* placeholder behind images while they load */
+  --ink: #111111;
+  --muted: #767676;
+  --line: #e7e7e5;
+
+  --font: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --wrap: 1440px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --header-h: 96px;
+
+  /* Painting wall: minimum column width and the gaps between paintings */
+  --cell: 240px;
+  --wall-col-gap: clamp(20px, 3.5vw, 56px);
+  --wall-row-gap: clamp(40px, 5.5vw, 88px);
+
+  color-scheme: light;
+}
+
+@media (max-width: 560px) {
+  :root { --cell: 130px; --header-h: 68px; }
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.55 var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+main { flex: 1; }
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-weight: 400; }
+
+:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 8px 14px;
+  background: var(--ink);
+  color: var(--bg);
+}
+.skip:focus { top: 12px; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.noscript { padding: 48px var(--gutter); color: var(--muted); }
+.noscript a { text-decoration: underline; }
+
+/* Small uppercase label used for headings across the site */
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.link-line {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.3s ease;
+  padding-bottom: 1px;
+}
+.link-line:hover, .link-line[aria-current="page"] { background-size: 100% 1px; }
+
+/* ---------- Header ---------- */
+
+.header-inner {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.wordmark {
+  font-size: clamp(26px, 2.8vw, 40px);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+.wordmark-tagline {
+  display: block;
+  margin-top: 6px;
+  padding-left: 20px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.site-nav { display: flex; gap: clamp(18px, 3vw, 40px); }
+.site-nav a { font-size: 14px; color: var(--muted); transition: color 0.2s; }
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--ink); }
+
+@media (max-width: 560px) {
+  .wordmark { font-size: 18px; letter-spacing: 0.08em; }
+  .wordmark-tagline { margin-top: 3px; padding-left: 16px; font-size: 10px; letter-spacing: 0.14em; }
+  .site-nav { gap: 16px; }
+  .site-nav a { font-size: 13px; }
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer { margin-top: clamp(72px, 10vw, 140px); }
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 32px;
+  padding-top: 24px;
+  padding-bottom: 32px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Page heading (series, About) ---------- */
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: clamp(32px, 6vw, 88px) 0 clamp(28px, 4vw, 48px);
+}
+.page-title {
+  font-size: clamp(28px, 3.6vw, 44px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.page-meta { font-size: 14px; color: var(--muted); }
+.page-desc { flex-basis: 100%; max-width: 60ch; margin-top: 8px; color: var(--muted); }
+
+/* ---------- Home ---------- */
+
+.home-image {
+  margin: 0 auto;
+  padding-top: clamp(8px, 3vw, 40px);
+  display: flex;
+  justify-content: center;
+}
+.home-image img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100svh - var(--header-h) - 64px);
+  background: var(--wall);
+}
+
+/* ---------- Series cards (Work page) ---------- */
+
+.work-page { padding-top: clamp(8px, 3vw, 40px); }
+
+.series-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(40px, 5vw, 72px) clamp(20px, 3vw, 40px);
+}
+.series-card { display: block; }
+.series-card-wall {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9%;
+  background: var(--wall);
+  overflow: hidden;
+}
+.series-card-wall img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.6s cubic-bezier(.2,.7,.2,1);
+}
+.series-card:hover .series-card-wall img { transform: scale(1.025); }
+.series-card-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 14px;
+}
+.series-card-title { font-size: 17px; }
+.series-card-count { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+/* ---------- Series page ---------- */
+
+.series-tabs {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+  margin-bottom: clamp(36px, 5vw, 64px);
+  border-bottom: 1px solid var(--line);
+}
+.series-tabs::-webkit-scrollbar { display: none; }
+.series-tabs a {
+  flex-shrink: 0;
+  padding: 10px 0 12px;
+  margin-bottom: -1px;
+  font-size: 14px;
+  color: var(--muted);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.series-tabs a:hover { color: var(--ink); }
+.series-tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+
+/*
+ * The wall: an even grid of cells. Each painting sits centred at the bottom
+ * of its cell, so a row of paintings shares a baseline like a hang. Paintings
+ * are sized by area rather than height: site.js sets --r (width / height) and
+ * --rw (its square root), so a tall narrow strip ends up taller and a wide
+ * painting wider, and each has about the same presence on the wall.
+ */
+.wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--cell), 1fr));
+  gap: var(--wall-row-gap) var(--wall-col-gap);
+  align-items: end;
+}
+
+.work {
+  container-type: inline-size;
+  display: flex;
+  justify-content: center;
+}
+/* An image marked `wide: true` in content.js (e.g. a panorama) takes a whole row. */
+.work-wide { grid-column: 1 / -1; }
+.work-inner {
+  --r: 1;
+  --rw: 1;
+  width: min(100%, calc(82cqi * var(--rw)));
+  text-align: left;
+  cursor: zoom-in;
+}
+.work-frame {
+  display: block;
+  aspect-ratio: var(--r);
+  background: var(--wall);
+  overflow: hidden;
+}
+.work-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.work-frame img.is-loaded { opacity: 1; }
+
+.work-caption {
+  display: block;
+  padding-top: 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.work-caption .num { font-variant-numeric: tabular-nums; }
+.work-caption .title { color: var(--ink); font-style: italic; font-weight: 300; }
+.work-inner:hover .work-caption .num { color: var(--ink); }
+
+.series-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: clamp(72px, 9vw, 128px);
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+.series-pager a { display: flex; flex-direction: column; gap: 2px; }
+.series-pager .next { text-align: right; margin-left: auto; }
+.series-pager .label { font-size: 11px; }
+.series-pager a:hover .pager-title { text-decoration: underline; text-underline-offset: 4px; }
+.pager-title { font-size: 17px; }
+
+.not-found { padding: 80px 0; }
+.not-found p { margin-top: 12px; color: var(--muted); }
+.not-found a { text-decoration: underline; }
+
+/* ---------- Viewer (series page) ---------- */
+
+.viewer {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--bg);
+  color: var(--ink);
+  overflow: hidden;
+}
+.viewer[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  animation: viewer-in 0.3s ease;
+}
+.viewer::backdrop { background: var(--bg); }
+@keyframes viewer-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .viewer[open] { animation: none; } }
+
+.viewer-top, .viewer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px var(--gutter);
+  font-size: 14px;
+}
+.viewer-bottom { padding-bottom: max(18px, env(safe-area-inset-bottom)); align-items: flex-end; }
+.viewer-series { color: var(--muted); }
+.viewer-close { display: flex; align-items: center; gap: 8px; color: var(--muted); transition: color 0.2s; }
+.viewer-close:hover { color: var(--ink); }
+.viewer-close svg, .viewer-arrows svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.viewer-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 0 var(--gutter);
+  touch-action: pan-y;
+}
+.viewer-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: opacity 0.25s;
+}
+.viewer-img.is-loading { opacity: 0; }
+
+.viewer-caption { color: var(--muted); line-height: 1.5; }
+.viewer-caption .title { color: var(--ink); font-style: italic; font-weight: 300; }
+.viewer-arrows { display: flex; gap: 8px; flex-shrink: 0; }
+.viewer-arrows button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: border-color 0.2s;
+}
+.viewer-arrows button:hover { border-color: var(--ink); }
+
+/* ---------- About ---------- */
+
+.two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(40px, 7vw, 120px);
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .two-col { grid-template-columns: 1fr; }
+}
+
+.bio p {
+  max-width: 46ch;
+  font-size: clamp(17px, 1.5vw, 19px);
+  font-weight: 300;
+  line-height: 1.6;
+}
+.bio p + p { margin-top: 1em; }
+.bio a { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.bio a:hover { text-decoration-color: currentColor; }
+
+.about-photo { margin: clamp(32px, 4vw, 48px) 0 0; }
+.about-photo img { width: 100%; height: auto; background: var(--wall); }
+
+.cv { display: grid; gap: clamp(40px, 4.5vw, 60px); }
+.cv-group .label { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.cv > .cv-group > .label { font-size: 15px; }
+.cv-subhead {
+  margin: 0;
+  padding: 24px 0 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 300;
+}
+.cv-list { list-style: none; margin: 0; padding: 0; }
+.cv-item {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cv-year { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cv-title { font-size: 15px; }
+.cv-title a { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.cv-title a:hover { text-decoration-color: currentColor; }
+.cv-detail { display: block; font-size: 14px; color: var(--muted); }
+.cv-group.quoted .cv-title { font-style: italic; font-weight: 300; }
+
+@media (max-width: 560px) {
+  .cv-item { grid-template-columns: 3rem minmax(0, 1fr); gap: 12px; }
+}
+
+/* ---------- Contact ---------- */
+
+.contact-photo { margin: 0; padding-top: clamp(8px, 3vw, 40px); }
+.contact-photo img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100svh - var(--header-h) - 64px);
+  background: var(--wall);
+}
+
+/* Desktop: the photo on the left, the heading and details beside it. */
+@media (min-width: 861px) {
+  .contact-layout:has(.contact-photo) {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(max-content, 1fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+    padding-top: clamp(8px, 3vw, 40px);
+  }
+  .contact-layout .contact-photo { padding-top: 0; }
+  .contact-layout:has(.contact-photo) .contact-list { grid-template-columns: 1fr; margin-top: 0; }
+}
+
+.contact-list {
+  margin: clamp(32px, 6vw, 88px) 0 0;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 40px clamp(32px, 6vw, 96px);
+}
+.contact-item {
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.contact-item dt {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.contact-item dd {
+  margin: 0;
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 300;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.contact-item a {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.3s ease;
+}
+.contact-item a:hover { background-size: 100% 1px; }
