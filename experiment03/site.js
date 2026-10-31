@@ -238,7 +238,7 @@
 
     const viewer = makeViewer(s);
 
-    // A link like series.html?s=paintings-3#12 opens painting 12.
+    // A link like series.html?s=portraits-self-portraits#12 opens painting 12.
     function syncFromHash() {
       const n = Number((location.hash.match(/^#(\d+)$/) || [])[1]);
       if (n >= 1 && n <= s.images.length) viewer.open(n - 1, { push: false });

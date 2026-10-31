@@ -239,7 +239,7 @@ window.SITE = {
       ],
     },
     {
-      title: "Paintings 3",
+      title: "Portraits + Self Portraits",
       images: [
         { file: "01_IMG_6925.jpg", width: 720, height: 689 },
         { file: "02_IMG_6927.jpg", width: 720, height: 759 },
@@ -279,7 +279,7 @@ window.SITE = {
       ],
     },
     {
-      title: "Sculpture",
+      title: '20" Rope Sculptures',
       images: [
         { file: "wayneherpich2026-65.jpg", width: 720, height: 480 },
         { file: "wayneherpich2026-66.jpg", width: 720, height: 480 },
