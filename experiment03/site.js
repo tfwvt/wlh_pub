@@ -224,6 +224,18 @@
           next && h("a", { class: "next", href: seriesUrl(next) },
             h("span", { class: "label" }, "Next →"), h("span", { class: "pager-title" }, next.title)))));
 
+    // On narrow screens the tabs scroll sideways: start with the current one
+    // centred, so the sections either side of it are in view.
+    const tabs = $(".series-tabs", main);
+    const centreTab = () => {
+      const cur = tabs && $('[aria-current="page"]', tabs);
+      if (!cur || tabs.scrollWidth <= tabs.clientWidth) return;
+      const t = tabs.getBoundingClientRect(), c = cur.getBoundingClientRect();
+      tabs.scrollLeft += c.left + c.width / 2 - (t.left + t.width / 2);
+    };
+    centreTab();
+    document.fonts?.ready.then(centreTab); // widths change once the web font arrives
+
     const viewer = makeViewer(s);
 
     // A link like series.html?s=paintings-3#12 opens painting 12.
