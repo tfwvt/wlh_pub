@@ -131,8 +131,23 @@ h1, h2, h3 { font-weight: 400; }
 }
 
 .site-nav { display: flex; gap: clamp(18px, 3vw, 40px); }
-.site-nav a { font-size: 14px; color: var(--muted); transition: color 0.2s; }
+.site-nav a { font-size: 14px; color: var(--muted); white-space: nowrap; transition: color 0.2s; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--ink); }
+
+/* Too narrow for the menu beside the name, so it goes on a line below. */
+@media (max-width: 640px) {
+  :root { --header-h: 124px; }
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 12px;
+  }
+}
+@media (max-width: 560px) {
+  :root { --header-h: 96px; }
+  .header-inner { gap: 10px; }
+}
 
 @media (max-width: 560px) {
   .wordmark { font-size: 18px; letter-spacing: 0.08em; }

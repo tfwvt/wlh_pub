@@ -96,9 +96,9 @@
           artist.name,
           artist.tagline && h("span", { class: "wordmark-tagline" }, artist.tagline)),
         h("nav", { class: "site-nav", "aria-label": "Main" },
-          link("work.html", "work", "Work"),
+          link("work.html", "work", "View Work"),
           link("about.html", "about", "About"),
-          link("contact.html", "contact", "Contact"))));
+          link("contact.html", "contact", "Contact + Social Media"))));
   }
 
   function renderFooter() {
