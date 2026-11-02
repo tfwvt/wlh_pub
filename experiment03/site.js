@@ -263,22 +263,46 @@
     const prevBtn = h("button", { type: "button", "aria-label": "Previous painting" }, icon("M15 5l-7 7 7 7"));
     const nextBtn = h("button", { type: "button", "aria-label": "Next painting" }, icon("M9 5l7 7-7 7"));
     const stage = h("div", { class: "viewer-stage" }, imgEl);
+    const arrows = s.images.length > 1 && h("div", { class: "viewer-arrows" }, prevBtn, nextBtn);
 
     const dialog = h("dialog", { class: "viewer", "aria-label": `${s.title} viewer` },
       h("div", { class: "viewer-top" }, h("span", { class: "viewer-series" }, s.title), closeBtn),
       stage,
       h("div", { class: "viewer-bottom" },
         captionEl,
-        s.images.length > 1 && h("div", { class: "viewer-arrows" }, prevBtn, nextBtn)));
+        arrows));
     document.body.append(dialog);
 
     let idx = 0;
+    let firstIdx = null; // the painting the viewer was opened on
     let pushedState = false;
+
+    // The arrows sit just below the bottom of the painting the viewer was
+    // opened on, and stay there while stepping through the others.
+    function placeArrows() {
+      if (!arrows || firstIdx == null) return;
+      const img = s.images[firstIdx];
+      const w = img.width || (idx === firstIdx && imgEl.naturalWidth);
+      const ht = img.height || (idx === firstIdx && imgEl.naturalHeight);
+      arrows.style.transform = "";
+      if (!w || !ht) return; // no size known yet: placed again once it loads
+      const box = stage.getBoundingClientRect();
+      const cs = getComputedStyle(stage);
+      const availW = box.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const shown = ht * Math.min(1, availW / w, box.height / ht); // as drawn: fitted, never enlarged
+      const imgBottom = box.top + (box.height + shown) / 2;
+      const shift = imgBottom + 18 - arrows.getBoundingClientRect().top;
+      if (shift < 0) arrows.style.transform = `translateY(${shift}px)`;
+    }
+    window.addEventListener("resize", placeArrows);
 
     function render() {
       const img = s.images[idx];
       imgEl.classList.add("is-loading");
-      imgEl.onload = () => imgEl.classList.remove("is-loading");
+      imgEl.onload = () => {
+        imgEl.classList.remove("is-loading");
+        if (idx === firstIdx && !(img.width && img.height)) placeArrows();
+      };
       imgEl.src = srcOf(img);
       imgEl.alt = altText(s, img, idx);
       countEl.textContent = `${idx + 1} / ${s.images.length}`;
@@ -295,6 +319,8 @@
       if (!dialog.open) {
         dialog.showModal();
         document.body.style.overflow = "hidden";
+        firstIdx = i;
+        placeArrows();
       }
       if (push) {
         history.pushState({ viewer: true }, "", `#${idx + 1}`);
@@ -324,6 +350,7 @@
     dialog.addEventListener("close", () => {
       document.body.style.overflow = "";
       pushedState = false;
+      firstIdx = null;
       const tile = $$(".work-inner")[idx];
       if (tile) {
         tile.focus({ preventScroll: true });
