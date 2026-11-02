@@ -241,6 +241,8 @@ window.SITE = {
     {
       title: "Portraits + Self Portraits",
       images: [
+        { file: "19_IMG_6928.jpg", width: 720, height: 789 },
+        { file: "08_IMG_6963.jpg", width: 720, height: 861 },
         { file: "wayneherpich2026-72.jpg", width: 546, height: 720 },
         { file: "wayneherpich2026-73.jpg", width: 720, height: 660 },
         { file: "wayneherpich2026-74.jpg", width: 663, height: 720 },
@@ -253,10 +255,8 @@ window.SITE = {
         { file: "wayneherpich2026-82.jpg", width: 720, height: 657 },
         { file: "wayneherpich2026-83.jpg", width: 667, height: 720 },
         { file: "wayneherpich2026-84.jpg", width: 720, height: 699 },
-        { file: "01_IMG_6925.jpg", width: 720, height: 689 },
         { file: "05_DSC05167.jpg", width: 720, height: 840 },
         { file: "06_IMG_6924.jpg", width: 720, height: 674 },
-        { file: "08_IMG_6963.jpg", width: 720, height: 861 },
         { file: "09_IMG_6922.jpg", width: 720, height: 667 },
         { file: "10_DSC05177.jpg", width: 720, height: 826 },
         { file: "11_IMG_6920.jpg", width: 720, height: 686 },
@@ -265,7 +265,7 @@ window.SITE = {
         { file: "16_IMG_6938.jpg", width: 720, height: 785 },
         { file: "17_DSC05178.jpg", width: 720, height: 841 },
         { file: "18_IMG_6923.jpg", width: 720, height: 663 },
-        { file: "19_IMG_6928.jpg", width: 720, height: 789 },
+        { file: "01_IMG_6925.jpg", width: 720, height: 689 },
         { file: "20_IMG_6939.jpg", width: 720, height: 771 },
         { file: "21_IMG_6960.jpg", width: 720, height: 822 },
         { file: "24_IMG_6937.jpg", width: 720, height: 772 },
