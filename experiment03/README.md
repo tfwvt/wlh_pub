@@ -15,7 +15,7 @@ In the order they appear on the Work page:
 | 108" x 48" Marker on Cotton Duck | 22 (`wayneherpich2026-43` to `-64`) |
 | 44" x 43" Oil on Linen | 42 paintings, then a full-width gallery panorama |
 | 108" x 48" Oil on Cotton Duck | 21 |
-| Portraits + Self Portraits | 48 (13 new at the start: `wayneherpich2026-72` to `-84`) |
+| Portraits + Self Portraits | 40 (`wayneherpich2026-72` to `-84`, then `01_IMG_6925` to `27_IMG_6954`) |
 | 20" Rope Sculpture | 7 (`wayneherpich2026-65` to `-71`) |
 
 ## What's different from experiment02
