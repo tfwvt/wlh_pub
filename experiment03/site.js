@@ -278,7 +278,8 @@
     let pushedState = false;
 
     // The arrows sit just below the bottom of the painting the viewer was
-    // opened on, and stay there while stepping through the others.
+    // opened on, centred halfway between its right edge and the right of the
+    // page, and stay there while stepping through the others.
     function placeArrows() {
       if (!arrows || firstIdx == null) return;
       const img = s.images[firstIdx];
@@ -289,10 +290,15 @@
       const box = stage.getBoundingClientRect();
       const cs = getComputedStyle(stage);
       const availW = box.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      const shown = ht * Math.min(1, availW / w, box.height / ht); // as drawn: fitted, never enlarged
-      const imgBottom = box.top + (box.height + shown) / 2;
-      const shift = imgBottom + 18 - arrows.getBoundingClientRect().top;
-      if (shift < 0) arrows.style.transform = `translateY(${shift}px)`;
+      const scale = Math.min(1, availW / w, box.height / ht); // as drawn: fitted, never enlarged
+      const imgBottom = box.top + (box.height + ht * scale) / 2;
+      const imgRight = box.left + (box.width + w * scale) / 2;
+      const a = arrows.getBoundingClientRect();
+      const pageRight = dialog.getBoundingClientRect().right;
+      // Never further right than they were, i.e. not into the page margin.
+      const dx = Math.min(0, (imgRight + pageRight) / 2 - (a.left + a.right) / 2);
+      const dy = Math.min(0, imgBottom + 18 - a.top);
+      if (dx || dy) arrows.style.transform = `translate(${dx}px, ${dy}px)`;
     }
     window.addEventListener("resize", placeArrows);
 
