@@ -171,6 +171,9 @@
     }
 
     document.title = `${s.title} — ${artist.name}`;
+    // For search engines that run scripts: each section is its own page.
+    $('meta[name="description"]').content = `${s.title}: ${plural(s.images.length, "work")} by ${artist.name}.`;
+    document.head.append(h("link", { rel: "canonical", href: new URL(seriesUrl(s), "https://wayneherpich.com/").href }));
 
     const wall = h("div", { class: "wall" });
     s.images.forEach((img, i) => {
