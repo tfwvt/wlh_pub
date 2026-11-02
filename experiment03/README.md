@@ -12,15 +12,15 @@ In the order they appear on the Work page:
 
 | Section | Images |
 | --- | --- |
-| 108" x 48" Marker on Canvas | 22 (`wayneherpich2026-43` to `-64`) |
+| 108" x 48" Marker on Cotton Duck | 22 (`wayneherpich2026-43` to `-64`) |
 | 44" x 43" Oil on Linen | 42 paintings, then a full-width gallery panorama |
-| 108" x 48" Oil on Canvas | 21 |
+| 108" x 48" Oil on Cotton Duck | 21 |
 | Portraits + Self Portraits | 35 |
-| 20" Rope Sculptures | 7 (`wayneherpich2026-65` to `-71`) |
+| 20" Rope Sculpture | 7 (`wayneherpich2026-65` to `-71`) |
 
 ## What's different from experiment02
 
-- **New sections:** 108" x 48" Marker on Canvas (first) and 20" Rope Sculptures (last).
+- **New sections:** 108" x 48" Marker on Cotton Duck (first) and 20" Rope Sculpture (last).
 - **Full-width images:** add `wide: true` to an image in `content.js` to make it span the whole wall on a row of its own. The 44" x 43" gallery panorama uses it.
 - **Covers from anywhere:** a section's `cover` can be any image file, not only one of the section's own images.
 - **No breadcrumb:** series pages no longer show the "Work /" link above the title. The header's Work link and the series tabs do that job.
@@ -90,4 +90,4 @@ The new section automatically gets its own page, a card on the Work page, a tab 
 
 ## Sources
 
-The original painting content was gathered on 2026-10-26 from wayneherpich.com, as for experiment02. The Marker on Canvas, Rope Sculptures and panorama images were added on 2026-10-31 and are also served from wayneherpich.com. The bio, CV and email come from the artist's resume. The Instagram link is the account linked from wayneherpich.com, @wayne_herpich_art.
+The original painting content was gathered on 2026-10-26 from wayneherpich.com, as for experiment02. The Marker on Cotton Duck, Rope Sculpture and panorama images were added on 2026-10-31 and are also served from wayneherpich.com. The bio, CV and email come from the artist's resume. The Instagram link is the account linked from wayneherpich.com, @wayne_herpich_art.

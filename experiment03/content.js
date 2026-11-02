@@ -136,7 +136,7 @@ window.SITE = {
 
   sections: [
     {
-      title: '108" x 48" Marker on Canvas',
+      title: '108" x 48" Marker on Cotton Duck',
       images: [
         { file: "wayneherpich2026-43.jpg", width: 610, height: 800 },
         { file: "wayneherpich2026-44.jpg", width: 600, height: 800 },
@@ -213,14 +213,14 @@ window.SITE = {
       ],
     },
     {
-      title: '108" x 48" Oil on Canvas',
+      title: '108" x 48" Oil on Cotton Duck',
       images: [
-        { file: "wayneherpich2026-36.jpg", width: 534, height: 800 },
+        { file: "black_white_8.jpg", width: 358, height: 800 },
         { file: "black_white_4.jpg", width: 339, height: 800 },
         { file: "black_white_5.jpg", width: 344, height: 800 },
         { file: "black_white_6.jpg", width: 343, height: 800 },
         { file: "black_white_7.jpg", width: 343, height: 800 },
-        { file: "black_white_8.jpg", width: 358, height: 800 },
+        { file: "wayneherpich2026-36.jpg", width: 534, height: 800 },
         { file: "black_white_11.jpg", width: 371, height: 800 },
         { file: "wayneherpich2026-30.jpg", width: 528, height: 800 },
         { file: "wayneherpich2026-31.jpg", width: 356, height: 800 },
@@ -279,7 +279,7 @@ window.SITE = {
       ],
     },
     {
-      title: '20" Rope Sculptures',
+      title: '20" Rope Sculpture',
       images: [
         { file: "wayneherpich2026-65.jpg", width: 720, height: 480 },
         { file: "wayneherpich2026-66.jpg", width: 720, height: 480 },

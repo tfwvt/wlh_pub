@@ -230,7 +230,6 @@ h1, h2, h3 { font-weight: 400; }
   gap: 12px;
   padding-top: 14px;
 }
-.series-card-title { font-size: 17px; }
 .series-card-count { font-size: 13px; color: var(--muted); white-space: nowrap; }
 
 /* ---------- Series page ---------- */

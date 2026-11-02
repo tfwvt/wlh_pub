@@ -122,7 +122,7 @@
           h("a", { class: "series-card", href: seriesUrl(s) },
             h("div", { class: "series-card-wall" }, img),
             h("div", { class: "series-card-text" },
-              h("span", { class: "series-card-title" }, s.title),
+              h("span", { class: "sr-only" }, `${s.title}, `),
               h("span", { class: "series-card-count" }, plural(s.images.length, "work")))));
       }));
   }
