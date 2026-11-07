@@ -45,7 +45,7 @@ There is one `series.html` for all the sections. The `?s=` part of the address c
 | `content.js` | **All the content.** Artist details, home photograph, every work section, the bio and the CV |
 | `site.js` | Builds every page from `content.js`: header, footer, section cards, the wall and the full-screen viewer |
 | `styles.css` | Design tokens (colours, font, spacing) at the top, then styles for each page |
-| `*.html` | Page shells. They are all the same except for `data-page` and the tags in `<head>`: title, description, address and link preview |
+| `*.html` | Page shells. They are all the same except for `data-page` and the tags in `<head>`: title, description, address and link preview. See [Caching while testing](#caching-while-testing) for the script that loads `styles.css`, `content.js` and `site.js` |
 | `share.jpg` | The picture shown when a link to the site is shared (1200 × 630) |
 
 ## Adding a new section
@@ -85,6 +85,21 @@ The new section automatically gets its own page, a card on the Work page, a tab 
 - **About photo:** `aboutImage`.
 - **Contact photo:** `contactImage`. Delete it to show the Contact page without a photo.
 - **Search and link previews:** each page's `<head>` has its title and description, which are repeated in the `og:` tags for link previews. Addresses assume the site is at `https://wayneherpich.com/`. The preview picture is `share.jpg`. `series.html` sets each section's title, description and address itself when it loads.
+
+## Caching while testing
+
+So testers see the latest version without clearing their phone's history, every page:
+
+- loads `styles.css`, `content.js` and `site.js` through a small script in `<head>` that adds `?v=` and the time to each address. The browser can't reuse an old copy, even if it kept the page itself. This is the part that works: GitHub Pages tells browsers they may keep every file for 10 minutes, and the site can't change that.
+- has `no-cache` meta tags (`Cache-Control`, `Pragma`, `Expires`). Most current browsers ignore these, but they do no harm.
+
+The photos still come from the browser's cache, so pages stay quick. Before launch, replace the script and its `<noscript>` line with the plain tags, so visitors' browsers can keep the files:
+
+```html
+<link rel="stylesheet" href="styles.css">
+<script src="content.js" defer></script>
+<script src="site.js" defer></script>
+```
 
 ## Design notes
 
