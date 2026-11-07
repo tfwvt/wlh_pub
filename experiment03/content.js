@@ -280,6 +280,8 @@ window.SITE = {
       images: [
         { file: "black_white_2.jpg", width: 800, height: 530 },
         { file: "black_white_1.jpg", width: 800, height: 530 },
+        { file: "wayneherpich2026-85.jpg", width: 960, height: 389 },
+        { file: "wayneherpich2026-92.jpg", width: 415, height: 960 },
       ],
     },
   ],

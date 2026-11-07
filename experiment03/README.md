@@ -17,7 +17,7 @@ In the order they appear on the Work page:
 | 108" x 48" Oil on Cotton Duck | 18 |
 | Portraits + Self Portraits | 30 (`wayneherpich2026-72` to `-84`, then `01_IMG_6925` to `27_IMG_6954`, less a few) |
 | 20" Rope Sculpture | 7 (`wayneherpich2026-65` to `-71`) |
-| Other | 2 (`black_white_2`, `black_white_1`) |
+| Other | 4 (`black_white_2`, `black_white_1`, `wayneherpich2026-85`, `wayneherpich2026-92`) |
 
 ## What's different from experiment02
 
