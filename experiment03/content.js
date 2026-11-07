@@ -125,7 +125,7 @@ window.SITE = {
 
   home: {
     // The large photograph at the top of the home page.
-    image: { file: "home_page.jpg", width: 980, height: 654, alt: "Large painted canvases hanging from the ceiling in a gallery, with a visitor looking at them" },
+    image: { file: "black_white_1.jpg", width: 800, height: 530, alt: "A long black-and-white painting hung on the side of a weathered wooden barn" },
   },
 
   // Photograph shown on the About page, below the biography.
