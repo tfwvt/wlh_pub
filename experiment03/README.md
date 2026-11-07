@@ -16,12 +16,12 @@ In the order they appear on the Work page:
 | 44" x 43" Oil on Linen | 38 paintings, then a full-width gallery panorama |
 | 108" x 48" Oil on Cotton Duck | 20 |
 | Portraits + Self Portraits | 30 (`wayneherpich2026-72` to `-84`, then `01_IMG_6925` to `27_IMG_6954`, less a few) |
-| 20" Rope Sculpture | 11 (`wayneherpich2026-65` to `-71`, then `-89`, `-86`, `-87`, `-88`) |
+| Sculpture | 11 (`wayneherpich2026-65` to `-71`, then `-89`, `-86`, `-87`, `-88`) |
 | Other | 4 (`black_white_2`, `black_white_1`, `wayneherpich2026-85`, `wayneherpich2026-92`) |
 
 ## What's different from experiment02
 
-- **New sections:** 108" x 48" Marker on Cotton Duck (first) and 20" Rope Sculpture (last).
+- **New sections:** 108" x 48" Marker on Cotton Duck (first) and Sculpture (last, first called 20" Rope Sculpture).
 - **Full-width images:** add `wide: true` to an image in `content.js` to make it span the whole wall on a row of its own. The 44" x 43" gallery panorama uses it.
 - **Covers from anywhere:** a section's `cover` can be any image file, not only one of the section's own images.
 - **No breadcrumb:** series pages no longer show the "Work /" link above the title. The header's Work link and the series tabs do that job.
@@ -36,7 +36,7 @@ In the order they appear on the Work page:
 | `about.html` | Bio, photograph and CV |
 | `contact.html` | A photograph, then email and Instagram |
 
-There is one `series.html` for all the sections. The `?s=` part of the address chooses which section it shows, and is made from the section's title (e.g. `series.html?s=20-rope-sculptures`), so a new section doesn't need a new file. Each image also has its own link, e.g. `series.html?s=20-rope-sculptures#3`.
+There is one `series.html` for all the sections. The `?s=` part of the address chooses which section it shows, and is made from the section's title (e.g. `series.html?s=sculpture`), so a new section doesn't need a new file. Each image also has its own link, e.g. `series.html?s=sculpture#3`.
 
 ## Files
 

@@ -266,7 +266,7 @@ window.SITE = {
       ],
     },
     {
-      title: '20" Rope Sculpture',
+      title: "Sculpture",
       images: [
         { file: "wayneherpich2026-65.jpg", width: 720, height: 480 },
         { file: "wayneherpich2026-66.jpg", width: 720, height: 480 },
