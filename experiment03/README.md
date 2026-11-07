@@ -30,7 +30,7 @@ In the order they appear on the Work page:
 
 | Page | What it shows |
 | --- | --- |
-| `index.html` | Home: a large photograph of the paintings installed in a gallery |
+| `index.html` | Home: a large photograph of a painting hung on a barn (`wayneherpich2026-enamel-on-barn`) |
 | `work.html` | Work: one card per section |
 | `series.html?s=...` | One page per section: the images hung on a "wall", tabs to the other sections, and previous/next links. Click an image to see it full screen |
 | `about.html` | Bio, photograph and CV |
