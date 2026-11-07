@@ -282,7 +282,9 @@
 
     // The arrows sit just below the bottom of the painting the viewer was
     // opened on, centred halfway between its right edge and the right of the
-    // page, and stay there while stepping through the others.
+    // page, and stay there while stepping through the others. Measured in the
+    // viewer's own units (offset*, client*), so this still holds while
+    // fitToScreen() has it scaled.
     function placeArrows() {
       if (!arrows || firstIdx == null) return;
       const img = s.images[firstIdx];
@@ -290,29 +292,58 @@
       const ht = img.height || (idx === firstIdx && imgEl.naturalHeight);
       arrows.style.transform = "";
       if (!w || !ht) return; // no size known yet: placed again once it loads
-      const box = stage.getBoundingClientRect();
       const cs = getComputedStyle(stage);
-      const availW = box.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      const scale = Math.min(1, availW / w, box.height / ht); // as drawn: fitted, never enlarged
-      const imgBottom = box.top + (box.height + ht * scale) / 2;
-      const imgRight = box.left + (box.width + w * scale) / 2;
-      const a = arrows.getBoundingClientRect();
-      const pageRight = dialog.getBoundingClientRect().right;
+      const padL = parseFloat(cs.paddingLeft);
+      const availW = stage.clientWidth - padL - parseFloat(cs.paddingRight);
+      const availH = stage.clientHeight;
+      const scale = Math.min(1, availW / w, availH / ht); // as drawn: fitted, never enlarged
+      const imgBottom = stage.offsetTop + (availH + ht * scale) / 2;
+      const imgRight = stage.offsetLeft + padL + (availW + w * scale) / 2;
+      const arrowsCentre = arrows.offsetLeft + arrows.offsetWidth / 2;
       // Never further right than they were, i.e. not into the page margin.
-      const dx = Math.min(0, (imgRight + pageRight) / 2 - (a.left + a.right) / 2);
-      const dy = Math.min(0, imgBottom + 18 - a.top);
+      const dx = Math.min(0, (imgRight + dialog.clientWidth) / 2 - arrowsCentre);
+      const dy = Math.min(0, imgBottom + 18 - arrows.offsetTop);
       if (dx || dy) arrows.style.transform = `translate(${dx}px, ${dy}px)`;
     }
     window.addEventListener("resize", placeArrows);
 
+    // The viewer can't be zoomed (see the touch handlers below), but if the
+    // page is zoomed in anyway, e.g. it was pinched before the viewer opened,
+    // fit the viewer to the part of the page that's on screen. Otherwise every
+    // painting shows as an enlarged corner, or just white.
+    const vv = window.visualViewport;
+    function fitToScreen() {
+      if (!vv || !dialog.open) return;
+      const zoomed = vv.scale !== 1 || vv.offsetLeft || vv.offsetTop;
+      dialog.style.transform = zoomed
+        ? `translate(${vv.offsetLeft}px, ${vv.offsetTop}px) scale(${1 / vv.scale})`
+        : "";
+    }
+    vv?.addEventListener("resize", fitToScreen);
+    vv?.addEventListener("scroll", fitToScreen);
+
+    let renders = 0;
     function render() {
       const img = s.images[idx];
+      const src = srcOf(img);
+      const n = ++renders;
+      let retries = 0;
       imgEl.classList.add("is-loading");
       imgEl.onload = () => {
         imgEl.classList.remove("is-loading");
         if (idx === firstIdx && !(img.width && img.height)) placeArrows();
       };
-      imgEl.src = srcOf(img);
+      // The image server sometimes drops a request: try again rather than
+      // leave a blank screen, and show the alt text if it still fails.
+      imgEl.onerror = () => {
+        if (n !== renders) return;
+        if (retries >= 2) return imgEl.classList.remove("is-loading");
+        retries++;
+        setTimeout(() => {
+          if (n === renders) imgEl.src = src + (src.includes("?") ? "&" : "?") + "retry=" + retries;
+        }, 1500 * retries);
+      };
+      imgEl.src = src;
       imgEl.alt = altText(s, img, idx);
       countEl.textContent = `${idx + 1} / ${s.images.length}`;
       captionEl.replaceChildren(countEl);
@@ -329,6 +360,7 @@
         dialog.showModal();
         document.body.style.overflow = "hidden";
         firstIdx = i;
+        fitToScreen();
         placeArrows();
       }
       if (push) {
@@ -347,13 +379,15 @@
       if (dialog.open) dialog.close();
     }
 
+    // Closes straight away, so a quick second tap on Close can't step back
+    // a second time (and leave the page).
     function close() {
       if (!dialog.open) return;
-      if (pushedState) history.back(); // popstate hides the dialog
-      else {
-        history.replaceState(null, "", location.pathname + location.search);
-        hide();
-      }
+      const back = pushedState;
+      pushedState = false;
+      hide();
+      if (back) history.back(); // drop the #n that open() added
+      else history.replaceState(null, "", location.pathname + location.search);
     }
 
     dialog.addEventListener("close", () => {
@@ -370,16 +404,28 @@
     closeBtn.addEventListener("click", close);
     prevBtn.addEventListener("click", () => step(-1));
     nextBtn.addEventListener("click", () => step(1));
-    stage.addEventListener("click", (e) => { if (e.target === stage) close(); });
+    // Clicking beside the painting closes the viewer, but not a tap on a
+    // touch screen, where it's usually a near miss of the arrows.
+    let pointerType = "";
+    stage.addEventListener("pointerdown", (e) => { pointerType = e.pointerType; });
+    stage.addEventListener("click", (e) => { if (e.target === stage && pointerType === "mouse") close(); });
     dialog.addEventListener("keydown", (e) => {
       if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
       else if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
     });
 
+    // No zooming in the viewer. A double tap that misses the arrows, or a
+    // pinch, would zoom the whole page, and it stays zoomed while paging.
+    // `touch-action: none` in styles.css stops it in most browsers; these
+    // stop a pinch in older Safari.
+    dialog.addEventListener("gesturestart", (e) => e.preventDefault());
+    dialog.addEventListener("touchmove", (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
     // Swipe left / right on touch screens.
     let touchX = null;
     let touchY = null;
     dialog.addEventListener("touchstart", (e) => {
+      if (e.touches.length > 1) { touchX = touchY = null; return; } // a pinch, not a swipe
       touchX = e.touches[0].clientX;
       touchY = e.touches[0].clientY;
     }, { passive: true });
@@ -388,7 +434,8 @@
       const dx = e.changedTouches[0].clientX - touchX;
       const dy = e.changedTouches[0].clientY - touchY;
       touchX = touchY = null;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+      const onScreen = Math.abs(dx) * (vv ? vv.scale : 1); // the same swipe length if the page is zoomed
+      if (onScreen > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
     }, { passive: true });
 
     return { open, hide };

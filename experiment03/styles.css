@@ -357,6 +357,10 @@ h1, h2, h3 { font-weight: 400; }
   background: var(--bg);
   color: var(--ink);
   overflow: hidden;
+  /* No double-tap or pinch zoom: it would zoom the page and stay zoomed
+     while paging. site.js swipes and fits it back to the screen if needed. */
+  touch-action: none;
+  transform-origin: 0 0;
 }
 .viewer[open] {
   display: grid;
@@ -395,7 +399,6 @@ h1, h2, h3 { font-weight: 400; }
   justify-content: center;
   min-height: 0;
   padding: 0 var(--gutter);
-  touch-action: pan-y;
 }
 .viewer-img {
   max-width: 100%;
@@ -422,6 +425,17 @@ h1, h2, h3 { font-weight: 400; }
   transition: border-color 0.2s;
 }
 .viewer-arrows button:hover { border-color: var(--ink); }
+
+/* Phones, upright or on their side: bigger arrows, and a tap just beside one
+   (or beside Close) still counts. */
+@media (max-width: 560px), (pointer: coarse) and (max-height: 560px) {
+  .viewer-arrows { gap: 14px; }
+  .viewer-arrows button { position: relative; width: 60px; height: 60px; }
+  .viewer-arrows button::after { content: ""; position: absolute; inset: -12px -7px; }
+  .viewer-arrows svg { width: 26px; height: 26px; }
+  .viewer-close { position: relative; }
+  .viewer-close::after { content: ""; position: absolute; inset: -14px -12px; }
+}
 
 /* ---------- About ---------- */
 
