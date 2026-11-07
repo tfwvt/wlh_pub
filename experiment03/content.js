@@ -226,8 +226,6 @@ window.SITE = {
         { file: "wayneherpich2026-40.jpg", width: 464, height: 800 },
         { file: "wayneherpich2026-41.jpg", width: 467, height: 800 },
         { file: "wayneherpich2026-42.jpg", width: 534, height: 800 },
-        { file: "black_white_2.jpg", width: 800, height: 530 },
-        { file: "black_white_1.jpg", width: 800, height: 530 },
       ],
     },
     {
@@ -275,6 +273,13 @@ window.SITE = {
         { file: "wayneherpich2026-69.jpg", width: 720, height: 480 },
         { file: "wayneherpich2026-70.jpg", width: 480, height: 720 },
         { file: "wayneherpich2026-71.jpg", width: 480, height: 720 },
+      ],
+    },
+    {
+      title: "Other",
+      images: [
+        { file: "black_white_2.jpg", width: 800, height: 530 },
+        { file: "black_white_1.jpg", width: 800, height: 530 },
       ],
     },
   ],
