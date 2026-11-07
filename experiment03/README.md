@@ -17,7 +17,7 @@ In the order they appear on the Work page:
 | 44" x 43" Oil on Linen | 38 paintings, then a full-width gallery panorama |
 | Portraits + Self Portraits | 30 (`wayneherpich2026-72` to `-84`, then `01_IMG_6925` to `27_IMG_6954`, less a few) |
 | Sculpture | 11 (`wayneherpich2026-65` to `-71`, then `-89`, `-86`, `-87`, `-88`) |
-| Other | 4 (`black_white_2`, `black_white_1`, `wayneherpich2026-85`, `wayneherpich2026-92`) |
+| Other | 5 (`black_white_2`, `black_white_1`, `wayneherpich2026-85`, `wayneherpich2026-92`, `about_page`) |
 
 ## What's different from experiment02
 
