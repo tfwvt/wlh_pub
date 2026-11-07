@@ -273,6 +273,10 @@ window.SITE = {
         { file: "wayneherpich2026-69.jpg", width: 720, height: 480 },
         { file: "wayneherpich2026-70.jpg", width: 480, height: 720 },
         { file: "wayneherpich2026-71.jpg", width: 480, height: 720 },
+        { file: "wayneherpich2026-89.jpg", width: 960, height: 701 },
+        { file: "wayneherpich2026-86.jpg", width: 793, height: 960 },
+        { file: "wayneherpich2026-87.jpg", width: 768, height: 960 },
+        { file: "wayneherpich2026-88.jpg", width: 960, height: 682 },
       ],
     },
     {
