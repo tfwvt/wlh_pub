@@ -13,7 +13,7 @@ In the order they appear on the Work page:
 | Section | Images |
 | --- | --- |
 | 108" x 48" Marker on Cotton Duck | 19 (`wayneherpich2026-43` to `-64`, less a few) |
-| 44" x 43" Oil on Linen | 42 paintings, then a full-width gallery panorama |
+| 44" x 43" Oil on Linen | 38 paintings, then a full-width gallery panorama |
 | 108" x 48" Oil on Cotton Duck | 21 |
 | Portraits + Self Portraits | 30 (`wayneherpich2026-72` to `-84`, then `01_IMG_6925` to `27_IMG_6954`, less a few) |
 | 20" Rope Sculpture | 7 (`wayneherpich2026-65` to `-71`) |
