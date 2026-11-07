@@ -227,7 +227,6 @@ window.SITE = {
         { file: "wayneherpich2026-41.jpg", width: 467, height: 800 },
         { file: "wayneherpich2026-42.jpg", width: 534, height: 800 },
         { file: "black_white_2.jpg", width: 800, height: 530 },
-        { file: "black_white_3.jpg", width: 800, height: 530 },
         { file: "black_white_1.jpg", width: 800, height: 530 },
       ],
     },
