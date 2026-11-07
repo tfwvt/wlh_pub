@@ -125,7 +125,7 @@ window.SITE = {
 
   home: {
     // The large photograph at the top of the home page.
-    image: { file: "black_white_1.jpg", width: 800, height: 530, alt: "A long black-and-white painting hung on the side of a weathered wooden barn" },
+    image: { file: "wayne_herpich_enamel_on_barn.jpg", width: 1020, height: 676, alt: "A long black-and-white painting hung on the side of a weathered wooden barn" },
   },
 
   // Photograph shown on the About page, below the biography.
