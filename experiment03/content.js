@@ -16,6 +16,12 @@
  *   wayneherpich.com where the photos already live). To use an image from
  *   somewhere else, put its full address in `src` instead of `file`.
  *
+ *   If you replace a photo on wayneherpich.com with a new one of the same
+ *   name, add ?v=2 to its `file` (then ?v=3 the next time, and so on), e.g.
+ *     { file: "painting.jpg?v=2", ... }
+ *   Browsers keep photos for up to a week, so without it some visitors would
+ *   go on seeing the old one.
+ *
  *   `width` and `height` are optional. They're the image's size in pixels and
  *   let the page lay out the wall before the photos load. Without them the
  *   page measures each image as it loads.
@@ -125,7 +131,7 @@ window.SITE = {
 
   home: {
     // The large photograph at the top of the home page.
-    image: { file: "wayneherpich2026-enamel-on-barn.jpg", width: 1080, height: 716, alt: "A long black-and-white painting hung on the side of a weathered wooden barn" },
+    image: { file: "black_white_1.jpg", width: 800, height: 530, alt: "A long black-and-white painting hung on the side of a weathered wooden barn" },
   },
 
   // Photograph shown on the About page, below the biography.
@@ -286,9 +292,9 @@ window.SITE = {
       images: [
         { file: "black_white_2.jpg", width: 800, height: 530 },
         { file: "black_white_1.jpg", width: 800, height: 530 },
-        { file: "wayneherpich2026-85.jpg", width: 1080, height: 284 },
-        { file: "wayneherpich2026-92.jpg", width: 415, height: 960 },
         { file: "about_page.jpg", width: 980, height: 735 },
+        { file: "wayneherpich2026-92.jpg", width: 415, height: 960 },
+        { file: "wayneherpich2026-85.jpg?v=3", width: 284, height: 1080 }, // ?v=3: replaced (rotated upright) 2026-11-08
       ],
     },
   ],
