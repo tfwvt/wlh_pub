@@ -244,7 +244,7 @@
     // A link like series.html?s=portraits-self-portraits#12 opens painting 12.
     function syncFromHash() {
       const n = Number((location.hash.match(/^#(\d+)$/) || [])[1]);
-      if (n >= 1 && n <= s.images.length) viewer.open(n - 1, { push: false });
+      if (n >= 1 && n <= s.images.length) viewer.open(n - 1);
       else viewer.hide();
     }
     window.addEventListener("popstate", syncFromHash);
@@ -281,7 +281,6 @@
 
     let idx = 0;
     let firstIdx = null; // the painting the viewer was opened on
-    let pushedState = false;
 
     // On larger screens the arrows sit just below the bottom of the painting
     // the viewer was opened on, centred halfway between its right edge and
@@ -374,50 +373,38 @@
       for (const d of [-1, 1]) new Image().src = srcOf(s.images[(idx + d + s.images.length) % s.images.length]);
     }
 
-    function open(i, { push = true } = {}) {
+    // The address shows the painting (#n), so it can be shared, but opening,
+    // paging and closing only ever replace the address: they add no history
+    // steps. Steps added and removed by the page are unreliable on iPhones
+    // (Chrome there especially), e.g. a white screen until touched.
+    const setHash = (hash) => history.replaceState(history.state, "", location.pathname + location.search + hash);
+
+    function open(i) {
       idx = i;
       render();
       if (!dialog.open) {
         dialog.showModal();
-        document.body.style.overflow = "hidden";
         firstIdx = i;
         fitToScreen();
         placeArrows();
       }
-      if (push) {
-        history.pushState({ viewer: true }, "", `#${idx + 1}`);
-        pushedState = true;
-      }
+      setHash(`#${idx + 1}`);
     }
 
     function step(d) {
       idx = (idx + d + s.images.length) % s.images.length;
       render();
-      history.replaceState(history.state, "", `#${idx + 1}`);
+      setHash(`#${idx + 1}`);
     }
 
     function hide() {
       if (dialog.open) dialog.close();
     }
 
-    // Step back past the #n that open() added, and let popstate hide the
-    // viewer. It stays up until then, so the page can't be tapped while the
-    // step back is on its way (Safari can cancel a link tapped in that
-    // moment), and more taps on Close are ignored.
-    let closing = false;
     function close() {
-      if (!dialog.open || closing) return;
-      if (!pushedState) {
-        history.replaceState(null, "", location.pathname + location.search);
-        return hide();
-      }
-      closing = true;
-      history.back();
-      setTimeout(() => { // in case the step back never comes
-        if (!closing) return;
-        history.replaceState(null, "", location.pathname + location.search);
-        hide();
-      }, 800);
+      if (!dialog.open) return;
+      setHash("");
+      hide();
     }
 
     // When the viewer last closed: a quick second tap on Close then lands on
@@ -425,17 +412,14 @@
     let closedAt = 0;
     const justClosed = () => Date.now() - closedAt < 400;
 
+    // Back on the wall exactly where it was: nothing scrolls on closing, so
+    // the tabs are still in view if they were, and an iPhone has nothing to
+    // repaint but the viewer going away. Keyboard focus returns to the
+    // painting the viewer was opened on.
     dialog.addEventListener("close", () => {
-      document.body.style.overflow = "";
-      pushedState = false;
-      closing = false;
       closedAt = Date.now();
+      $$(".work-inner")[firstIdx ?? idx]?.focus({ preventScroll: true });
       firstIdx = null;
-      const tile = $$(".work-inner")[idx];
-      if (tile) {
-        tile.focus({ preventScroll: true });
-        tile.scrollIntoView({ block: "nearest" });
-      }
     });
     dialog.addEventListener("cancel", (e) => { e.preventDefault(); close(); });
     closeBtn.addEventListener("click", close);
@@ -451,12 +435,13 @@
       else if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
     });
 
-    // No zooming in the viewer. A double tap that misses the arrows, or a
-    // pinch, would zoom the whole page, and it stays zoomed while paging.
-    // `touch-action: none` in styles.css stops it in most browsers; these
-    // stop a pinch in older Safari.
+    // No zooming or scrolling from the viewer. A double tap that misses the
+    // arrows, or a pinch, would zoom the whole page, and it stays zoomed
+    // while paging; a drag would scroll the page behind. `touch-action: none`
+    // in styles.css stops these in most browsers; these stop them in older
+    // Safari. (With a mouse, styles.css locks the page's scrolling instead.)
     dialog.addEventListener("gesturestart", (e) => e.preventDefault());
-    dialog.addEventListener("touchmove", (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+    dialog.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
 
     // Swipe left / right on touch screens.
     let touchX = null;
