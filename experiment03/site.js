@@ -281,23 +281,24 @@
 
     let idx = 0;
     let firstIdx = null; // the painting the viewer was opened on
+    const zoom = { s: 1, x: 0, y: 0 }; // pinch zoom: scale, and offset from the stage's centre
 
     // On larger screens the arrows sit just below the bottom of the painting
     // the viewer was opened on, centred halfway between its right edge and
     // the right of the page, and stay there while stepping through the
     // others. Measured in the viewer's own units (offset*, client*), so this
     // still holds while fitToScreen() has it scaled.
-    // On phones (the same media query as in styles.css) they stay in the
-    // bottom-right corner, below the painting, since a taller painting
-    // further on would otherwise cover them.
-    const phone = matchMedia("(max-width: 560px), (pointer: coarse) and (max-height: 560px)");
+    // On phones and other touch screens, and while a painting is zoomed in,
+    // they stay in the bottom-right corner instead, below the painting area:
+    // a taller painting further on, or a zoomed one, would otherwise cover them.
+    const bottomRight = matchMedia("(max-width: 560px), (pointer: coarse)");
     function placeArrows() {
       if (!arrows || firstIdx == null) return;
       const img = s.images[firstIdx];
       const w = img.width || (idx === firstIdx && imgEl.naturalWidth);
       const ht = img.height || (idx === firstIdx && imgEl.naturalHeight);
       arrows.style.transform = "";
-      if (phone.matches) return;
+      if (bottomRight.matches || zoom.s > 1) return;
       if (!w || !ht) return; // no size known yet: placed again once it loads
       const cs = getComputedStyle(stage);
       const padL = parseFloat(cs.paddingLeft);
@@ -348,6 +349,7 @@
       const src = srcOf(img);
       const n = ++renders;
       let retries = 0;
+      setZoom(1, 0, 0);
       imgEl.classList.add("is-loading");
       imgEl.onload = () => {
         imgEl.classList.remove("is-loading");
@@ -418,6 +420,7 @@
     // painting the viewer was opened on.
     dialog.addEventListener("close", () => {
       closedAt = Date.now();
+      setZoom(1, 0, 0);
       $$(".work-inner")[firstIdx ?? idx]?.focus({ preventScroll: true });
       firstIdx = null;
     });
@@ -435,30 +438,97 @@
       else if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
     });
 
-    // No zooming or scrolling from the viewer. A double tap that misses the
-    // arrows, or a pinch, would zoom the whole page, and it stays zoomed
-    // while paging; a drag would scroll the page behind. `touch-action: none`
-    // in styles.css stops these in most browsers; these stop them in older
-    // Safari. (With a mouse, styles.css locks the page's scrolling instead.)
+    // The browser never zooms or scrolls from the viewer. A double tap that
+    // misses the arrows, or a pinch, would zoom the whole page, and it stays
+    // zoomed while paging; a drag would scroll the page behind.
+    // `touch-action: none` in styles.css stops these in most browsers; the
+    // preventDefault()s stop them in older Safari. (With a mouse, styles.css
+    // locks the page's scrolling instead.) The viewer does its own zooming:
     dialog.addEventListener("gesturestart", (e) => e.preventDefault());
-    dialog.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
 
-    // Swipe left / right on touch screens.
-    let touchX = null;
-    let touchY = null;
+    /*
+     * Touch: swipe left / right to page; pinch (or pull apart) to zoom into
+     * the painting, and drag it while zoomed. The zoomed painting is clipped
+     * to the stage (overflow: hidden in styles.css), which runs from just
+     * below Close to just above the arrows, so it never covers the controls.
+     * Paging or closing goes back to the whole painting.
+     */
+    const MAX_ZOOM = 5;
+    // A touch's position in the stage's own units, from its centre, which is
+    // where the unzoomed painting's centre is.
+    function stagePoint(touch) {
+      const r = stage.getBoundingClientRect();
+      const k = r.width / stage.offsetWidth || 1; // fitToScreen() may scale the viewer
+      return {
+        x: (touch.clientX - r.left) / k - stage.offsetWidth / 2,
+        y: (touch.clientY - r.top) / k - stage.offsetHeight / 2,
+      };
+    }
+    function setZoom(scale, x, y, settle = false) {
+      const wasZoomed = zoom.s > 1;
+      // Keep the edges of a zoomed painting at or beyond the stage's edges,
+      // and keep it centred along any side where it's smaller than the stage.
+      const mx = Math.max(0, (imgEl.offsetWidth * scale - stage.offsetWidth) / 2);
+      const my = Math.max(0, (imgEl.offsetHeight * scale - stage.offsetHeight) / 2);
+      zoom.s = scale;
+      zoom.x = Math.min(mx, Math.max(-mx, x));
+      zoom.y = Math.min(my, Math.max(-my, y));
+      imgEl.classList.toggle("is-settling", settle);
+      imgEl.style.transform = scale === 1 ? "" : `translate(${zoom.x}px, ${zoom.y}px) scale(${scale})`;
+      if (wasZoomed !== zoom.s > 1) placeArrows();
+    }
+    window.addEventListener("resize", () => setZoom(1, 0, 0));
+
+    let gesture = null;
+    const startPan = (touch) => {
+      const p = stagePoint(touch);
+      gesture = { type: "pan", x0: p.x - zoom.x, y0: p.y - zoom.y };
+    };
     dialog.addEventListener("touchstart", (e) => {
-      if (e.touches.length > 1) { touchX = touchY = null; return; } // a pinch, not a swipe
-      touchX = e.touches[0].clientX;
-      touchY = e.touches[0].clientY;
+      const t = e.touches;
+      if (t.length >= 2) {
+        // Keep the point of the painting between the fingers under them.
+        const a = stagePoint(t[0]), b = stagePoint(t[1]);
+        const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+        gesture = {
+          type: "pinch",
+          d0: Math.hypot(a.x - b.x, a.y - b.y) || 1,
+          s0: zoom.s,
+          px: (mx - zoom.x) / zoom.s,
+          py: (my - zoom.y) / zoom.s,
+        };
+      } else if (zoom.s > 1) startPan(t[0]);
+      else gesture = { type: "swipe", x: t[0].clientX, y: t[0].clientY };
     }, { passive: true });
-    dialog.addEventListener("touchend", (e) => {
-      if (touchX == null) return;
-      const dx = e.changedTouches[0].clientX - touchX;
-      const dy = e.changedTouches[0].clientY - touchY;
-      touchX = touchY = null;
-      const onScreen = Math.abs(dx) * (vv ? vv.scale : 1); // the same swipe length if the page is zoomed
-      if (onScreen > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
-    }, { passive: true });
+    dialog.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      const t = e.touches;
+      if (gesture?.type === "pinch" && t.length >= 2) {
+        const a = stagePoint(t[0]), b = stagePoint(t[1]);
+        const scale = Math.min(MAX_ZOOM, Math.max(0.85, gesture.s0 * Math.hypot(a.x - b.x, a.y - b.y) / gesture.d0));
+        setZoom(scale, (a.x + b.x) / 2 - gesture.px * scale, (a.y + b.y) / 2 - gesture.py * scale);
+      } else if (gesture?.type === "pan") {
+        const p = stagePoint(t[0]);
+        setZoom(zoom.s, p.x - gesture.x0, p.y - gesture.y0);
+      }
+    }, { passive: false });
+    const endTouch = (e) => {
+      if (!gesture) return;
+      const t = e.touches;
+      if (gesture.type === "swipe") {
+        const dx = e.changedTouches[0].clientX - gesture.x;
+        const dy = e.changedTouches[0].clientY - gesture.y;
+        gesture = null;
+        const onScreen = Math.abs(dx) * (vv ? vv.scale : 1); // the same swipe length if the page is zoomed
+        if (e.type === "touchend" && onScreen > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+      } else if (t.length === 1 && zoom.s > 1) startPan(t[0]); // one finger left after a pinch: drag on
+      else if (!t.length) {
+        gesture = null;
+        if (zoom.s < 1.05) setZoom(1, 0, 0, true); // pinched back down: the whole painting again
+      }
+    };
+    dialog.addEventListener("touchend", endTouch, { passive: true });
+    dialog.addEventListener("touchcancel", endTouch, { passive: true });
 
     return { open, hide, justClosed };
   }

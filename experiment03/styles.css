@@ -416,6 +416,10 @@ h1, h2, h3 { font-weight: 400; }
   justify-content: center;
   min-height: 0;
   padding: 0 var(--gutter);
+  /* The mask for a pinch-zoomed painting (site.js): it shows only between
+     the top bar and the bottom bar, i.e. from just below Close to just above
+     the arrows, never over them. */
+  overflow: hidden;
 }
 .viewer-img {
   max-width: 100%;
@@ -428,6 +432,7 @@ h1, h2, h3 { font-weight: 400; }
   transition: opacity 0.25s;
 }
 .viewer-img.is-loading { opacity: 0; }
+.viewer-img.is-settling { transition: opacity 0.25s, transform 0.2s ease-out; }
 
 .viewer-caption { color: var(--muted); line-height: 1.5; }
 .viewer-caption .title { color: var(--ink); font-style: italic; font-weight: 300; }
@@ -443,9 +448,9 @@ h1, h2, h3 { font-weight: 400; }
 }
 .viewer-arrows button:hover { border-color: var(--ink); }
 
-/* Phones, upright or on their side: bigger arrows, kept in the bottom-right
-   corner (site.js), and a tap just beside one (or beside Close) still counts.
-   site.js repeats this media query. */
+/* Phones, upright or on their side: bigger arrows, and a tap just beside one
+   (or beside Close) still counts. site.js keeps the arrows in the bottom-right
+   corner on these and other touch screens. */
 @media (max-width: 560px), (pointer: coarse) and (max-height: 560px) {
   .viewer-arrows { gap: 14px; }
   .viewer-arrows button { position: relative; width: 60px; height: 60px; }
