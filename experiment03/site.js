@@ -32,6 +32,13 @@
     String(text).toLowerCase().normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/[\s_]+/g, "-");
 
   const srcOf = (img) => img.src || (SITE.imageBase || "") + img.file;
+
+  // Screens wider than a phone show an image's `wideScreen` version, if it
+  // has one (e.g. a horizontal photo of a work that phones show upright).
+  // Everything else about the image (title, caption, alt text) stays.
+  const wideScreen = matchMedia("(min-width: 561px)");
+  const shown = (img) =>
+    img.wideScreen && wideScreen.matches ? { ...img, file: null, src: null, ...img.wideScreen } : img;
   const plural = (n, one, many = one + "s") => `${n} ${n === 1 ? one : many}`;
   const pad = (n) => String(n).padStart(2, "0");
 
@@ -177,33 +184,41 @@
 
     const wall = h("div", { class: "wall" });
     s.images.forEach((img, i) => {
-      const known = img.width && img.height;
-      const ratio = known ? img.width / img.height : 1;
-      const pic = h("img", { alt: altText(s, img, i), loading: "lazy", decoding: "async", width: img.width, height: img.height });
+      const frame = h("span", { class: "work-frame" });
       const inner = h("button", {
         class: "work-inner",
         type: "button",
-        style: `--r:${ratio};--rw:${Math.sqrt(ratio)}`,
         "aria-label": `View larger: ${altText(s, img, i)}`,
       },
-        h("span", { class: "work-frame" }, pic),
+        frame,
         h("span", { class: "work-caption" }, h("span", { class: "num" }, pad(i + 1)), img.title || img.year ? [" — ", details(img)] : null));
       const cell = h("div", { class: img.wide ? "work work-wide" : "work" }, inner);
 
-      // Without width/height in content.js, use the real proportions as soon
-      // as the browser knows them (well before a slow image finishes).
-      if (!known) {
-        const poll = setInterval(() => {
-          if (pic.naturalWidth) {
-            const r = pic.naturalWidth / pic.naturalHeight;
-            inner.style.setProperty("--r", r);
-            inner.style.setProperty("--rw", Math.sqrt(r));
-          }
-          if (pic.naturalWidth || !cell.isConnected) clearInterval(poll);
-        }, 200);
+      // Puts the photo in the frame: its `wideScreen` version on wider
+      // screens, and again whenever the screen crosses that width.
+      function showPhoto() {
+        const v = shown(img);
+        const setRatio = (r) => {
+          inner.style.setProperty("--r", r);
+          inner.style.setProperty("--rw", Math.sqrt(r));
+        };
+        const known = v.width && v.height;
+        setRatio(known ? v.width / v.height : 1);
+        const pic = h("img", { alt: altText(s, img, i), loading: "lazy", decoding: "async", width: v.width, height: v.height });
+        // Without width/height in content.js, use the real proportions as
+        // soon as the browser knows them (well before a slow image finishes).
+        if (!known) {
+          const poll = setInterval(() => {
+            if (pic.naturalWidth) setRatio(pic.naturalWidth / pic.naturalHeight);
+            if (pic.naturalWidth || !pic.isConnected) clearInterval(poll);
+          }, 200);
+        }
+        pic.addEventListener("load", () => pic.classList.add("is-loaded"), { once: true });
+        withRetry(pic, srcOf(v), () => cell.remove());
+        frame.replaceChildren(pic);
       }
-      pic.addEventListener("load", () => pic.classList.add("is-loaded"), { once: true });
-      withRetry(pic, srcOf(img), () => cell.remove());
+      showPhoto();
+      if (img.wideScreen) wideScreen.addEventListener("change", showPhoto);
 
       inner.addEventListener("click", () => { if (!viewer.justClosed()) viewer.open(i); });
       wall.append(cell);
@@ -294,7 +309,7 @@
     const bottomRight = matchMedia("(max-width: 560px), (pointer: coarse)");
     function placeArrows() {
       if (!arrows || firstIdx == null) return;
-      const img = s.images[firstIdx];
+      const img = shown(s.images[firstIdx]);
       const w = img.width || (idx === firstIdx && imgEl.naturalWidth);
       const ht = img.height || (idx === firstIdx && imgEl.naturalHeight);
       arrows.style.transform = "";
@@ -318,7 +333,7 @@
       // in the section that would reach them.
       const left = arrows.offsetLeft + dx;
       let top = first.bottom + 18;
-      for (const other of s.images) {
+      for (const other of s.images.map(shown)) {
         if (!(other.width && other.height)) continue;
         const d = drawn(other.width, other.height);
         if (d.left < left + arrowsW && d.right > left) top = Math.max(top, d.bottom + 18);
@@ -343,17 +358,25 @@
     vv?.addEventListener("resize", fitToScreen);
     vv?.addEventListener("scroll", fitToScreen);
 
+    // The screen crossed the phone width (e.g. a phone turned sideways): show
+    // the open painting's other version, if it has one.
+    wideScreen.addEventListener("change", () => {
+      if (dialog.open && s.images[idx].wideScreen) render();
+      placeArrows();
+    });
+
     let renders = 0;
     function render() {
       const img = s.images[idx];
-      const src = srcOf(img);
+      const photo = shown(img);
+      const src = srcOf(photo);
       const n = ++renders;
       let retries = 0;
       setZoom(1, 0, 0);
       imgEl.classList.add("is-loading");
       imgEl.onload = () => {
         imgEl.classList.remove("is-loading");
-        if (idx === firstIdx && !(img.width && img.height)) placeArrows();
+        if (idx === firstIdx && !(photo.width && photo.height)) placeArrows();
       };
       // The image server sometimes drops a request: try again rather than
       // leave a blank screen, and show the alt text if it still fails.
@@ -372,7 +395,7 @@
       if (img.title || img.year || img.medium || img.size) captionEl.append(h("br"), ...details(img).filter(Boolean));
 
       // Warm the cache for neighbours so stepping through feels instant.
-      for (const d of [-1, 1]) new Image().src = srcOf(s.images[(idx + d + s.images.length) % s.images.length]);
+      for (const d of [-1, 1]) new Image().src = srcOf(shown(s.images[(idx + d + s.images.length) % s.images.length]));
     }
 
     // The address shows the painting (#n), so it can be shared, but opening,

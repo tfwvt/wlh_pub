@@ -17,7 +17,7 @@ In the order they appear on the Work page:
 | 44" x 43" Oil on Linen | 38 paintings, then a full-width gallery panorama |
 | Portraits + Self Portraits | 30 (`wayneherpich2026-72` to `-84`, then `01_IMG_6925` to `27_IMG_6954`, less a few) |
 | Sculpture | 11 (`wayneherpich2026-65` to `-71`, then `-89`, `-86`, `-87`, `-88`) |
-| Other | 5 (`black_white_2`, `black_white_1`, `about_page`, `wayneherpich2026-92`, `wayneherpich2026-85`) |
+| Other | 5 (`black_white_2`, `black_white_1`, `about_page`, `wayneherpich2026-92`, `wayneherpich2026-85`; the last two show their `-horizontal` versions on wider screens) |
 
 ## What's different from experiment02
 
@@ -73,6 +73,7 @@ The new section automatically gets its own page, a card on the Work page, a tab 
 - `file` is the image's name in `https://wayneherpich.com/images/` (set once as `imageBase`). Upload new photos there the same way as before. For an image hosted anywhere else, use `src: "https://..."` instead of `file`.
 - `width` and `height` (in pixels) are optional. With them, the wall is laid out before the photos arrive. Without them, the page reads each photo's size as it loads.
 - `wide: true` is optional. It makes the image span the full width of the wall, on its own row. Use it for panoramas and other very wide images, which would otherwise be a thin strip in a normal cell.
+- `wideScreen` is optional: a different photo of the work for screens wider than a phone (over 560 pixels), with its own `file` (or `src`), `width` and `height`. For example, Other's `wayneherpich2026-85` and `wayneherpich2026-92` are upright on phones and horizontal (`...-horizontal`) on wider screens. It switches when a phone is turned sideways.
 - `title`, `year`, `medium` and `size` are optional. They appear in the caption under the image and in the full-screen viewer. Images without them are captioned with their number.
 - `cover` on a section (e.g. `cover: "new_painting_02.jpg"`) picks the image on its Work card. It can be any image file, even one that isn't in the section. Otherwise the first image is used.
 - If you replace a photo on wayneherpich.com with a new one of the same name, add `?v=2` to its `file` (`?v=3` the next time, and so on). Browsers keep photos for up to a week, so without it some visitors would go on seeing the old one.

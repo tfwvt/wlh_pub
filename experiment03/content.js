@@ -22,6 +22,12 @@
  *   Browsers keep photos for up to a week, so without it some visitors would
  *   go on seeing the old one.
  *
+ *   To show a different photo of a work on screens wider than a phone (over
+ *   560 pixels), e.g. a horizontal version of one that phones show upright,
+ *   give the image a `wideScreen` with its own file and size:
+ *     { file: "upright.jpg", width: 284, height: 1080,
+ *       wideScreen: { file: "horizontal.jpg", width: 1080, height: 284 } },
+ *
  *   `width` and `height` are optional. They're the image's size in pixels and
  *   let the page lay out the wall before the photos load. Without them the
  *   page measures each image as it loads.
@@ -293,8 +299,10 @@ window.SITE = {
         { file: "black_white_2.jpg", width: 800, height: 530 },
         { file: "black_white_1.jpg", width: 800, height: 530 },
         { file: "about_page.jpg", width: 980, height: 735 },
-        { file: "wayneherpich2026-92.jpg", width: 415, height: 960 },
-        { file: "wayneherpich2026-85.jpg?v=3", width: 284, height: 1080 }, // ?v=3: replaced (rotated upright) 2026-11-08
+        { file: "wayneherpich2026-92.jpg", width: 415, height: 960,
+          wideScreen: { file: "wayneherpich2026-92-horizontal.jpg", width: 960, height: 415 } },
+        { file: "wayneherpich2026-85.jpg?v=3", width: 284, height: 1080, // ?v=3: replaced (rotated upright) 2026-11-08
+          wideScreen: { file: "wayneherpich2026-85-horizontal.jpg", width: 1080, height: 284 } },
       ],
     },
   ],
