@@ -381,7 +381,18 @@ h1, h2, h3 { font-weight: 400; }
 }
 .viewer-bottom { padding-bottom: max(18px, env(safe-area-inset-bottom)); align-items: flex-end; }
 .viewer-series { color: var(--muted); }
-.viewer-close { display: flex; align-items: center; gap: 8px; color: var(--muted); transition: color 0.2s; }
+/* Close always has a rectangle round it (the same line as a focus ring);
+   a thicker one shows keyboard focus. */
+.viewer-close {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
+  transition: color 0.2s;
+}
+.viewer-close:focus-visible { outline-width: 2px; }
 .viewer-close:hover { color: var(--ink); }
 .viewer-close svg, .viewer-arrows svg {
   width: 18px;
@@ -426,8 +437,9 @@ h1, h2, h3 { font-weight: 400; }
 }
 .viewer-arrows button:hover { border-color: var(--ink); }
 
-/* Phones, upright or on their side: bigger arrows, and a tap just beside one
-   (or beside Close) still counts. */
+/* Phones, upright or on their side: bigger arrows, kept in the bottom-right
+   corner (site.js), and a tap just beside one (or beside Close) still counts.
+   site.js repeats this media query. */
 @media (max-width: 560px), (pointer: coarse) and (max-height: 560px) {
   .viewer-arrows { gap: 14px; }
   .viewer-arrows button { position: relative; width: 60px; height: 60px; }

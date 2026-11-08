@@ -104,7 +104,8 @@ The photos still come from the browser's cache, so pages stay quick. Before laun
 ## Design notes
 
 - On section pages the images are sized by area rather than all at the same height, so a tall, narrow strip appears taller and a wide piece wider. Each image sits at the bottom of its grid cell, so a row shares a baseline like a hang on a wall. Images marked `wide` are the exception: they fill a whole row.
-- The full-screen viewer is white, like the walls. Use the arrow keys or swipe to move between images, and Esc or Close to return. With a mouse, clicking beside the image also closes it.
+- The full-screen viewer is white, like the walls. Use the arrow keys or swipe to move between images, and Esc or Close (always outlined with a rectangle) to return. With a mouse, clicking beside the image also closes it.
+- The viewer's arrows sit just below the image it was opened on, and lower if another image in the section would reach them, so no image covers them while paging. On phones they stay in the bottom-right corner instead.
 - On phones the viewer's arrows are bigger, and a tap just beside one still counts. The viewer can't be zoomed (a stray double tap used to zoom the page and leave every image enlarged), and a tap beside the image does nothing rather than closing it.
 
 ## Sources

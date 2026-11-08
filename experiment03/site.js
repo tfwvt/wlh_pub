@@ -205,7 +205,7 @@
       pic.addEventListener("load", () => pic.classList.add("is-loaded"), { once: true });
       withRetry(pic, srcOf(img), () => cell.remove());
 
-      inner.addEventListener("click", () => viewer.open(i));
+      inner.addEventListener("click", () => { if (!viewer.justClosed()) viewer.open(i); });
       wall.append(cell);
     });
 
@@ -248,6 +248,9 @@
       else viewer.hide();
     }
     window.addEventListener("popstate", syncFromHash);
+    // A page brought back by the browser's back / forward buttons can be
+    // restored as it was left: match the viewer to the address again.
+    window.addEventListener("pageshow", (e) => { if (e.persisted) syncFromHash(); });
     syncFromHash();
   }
 
@@ -280,29 +283,47 @@
     let firstIdx = null; // the painting the viewer was opened on
     let pushedState = false;
 
-    // The arrows sit just below the bottom of the painting the viewer was
-    // opened on, centred halfway between its right edge and the right of the
-    // page, and stay there while stepping through the others. Measured in the
-    // viewer's own units (offset*, client*), so this still holds while
-    // fitToScreen() has it scaled.
+    // On larger screens the arrows sit just below the bottom of the painting
+    // the viewer was opened on, centred halfway between its right edge and
+    // the right of the page, and stay there while stepping through the
+    // others. Measured in the viewer's own units (offset*, client*), so this
+    // still holds while fitToScreen() has it scaled.
+    // On phones (the same media query as in styles.css) they stay in the
+    // bottom-right corner, below the painting, since a taller painting
+    // further on would otherwise cover them.
+    const phone = matchMedia("(max-width: 560px), (pointer: coarse) and (max-height: 560px)");
     function placeArrows() {
       if (!arrows || firstIdx == null) return;
       const img = s.images[firstIdx];
       const w = img.width || (idx === firstIdx && imgEl.naturalWidth);
       const ht = img.height || (idx === firstIdx && imgEl.naturalHeight);
       arrows.style.transform = "";
+      if (phone.matches) return;
       if (!w || !ht) return; // no size known yet: placed again once it loads
       const cs = getComputedStyle(stage);
       const padL = parseFloat(cs.paddingLeft);
       const availW = stage.clientWidth - padL - parseFloat(cs.paddingRight);
       const availH = stage.clientHeight;
-      const scale = Math.min(1, availW / w, availH / ht); // as drawn: fitted, never enlarged
-      const imgBottom = stage.offsetTop + (availH + ht * scale) / 2;
-      const imgRight = stage.offsetLeft + padL + (availW + w * scale) / 2;
-      const arrowsCentre = arrows.offsetLeft + arrows.offsetWidth / 2;
+      // Where a painting is drawn: fitted to the stage, never enlarged, centred.
+      const drawn = (pw, ph) => {
+        const k = Math.min(1, availW / pw, availH / ph);
+        const left = stage.offsetLeft + padL + (availW - pw * k) / 2;
+        return { left, right: left + pw * k, bottom: stage.offsetTop + (availH + ph * k) / 2 };
+      };
+      const first = drawn(w, ht);
+      const arrowsW = arrows.offsetWidth;
       // Never further right than they were, i.e. not into the page margin.
-      const dx = Math.min(0, (imgRight + dialog.clientWidth) / 2 - arrowsCentre);
-      const dy = Math.min(0, imgBottom + 18 - arrows.offsetTop);
+      const dx = Math.min(0, (first.right + dialog.clientWidth) / 2 - (arrows.offsetLeft + arrowsW / 2));
+      // Just below this painting, but low enough to clear any other painting
+      // in the section that would reach them.
+      const left = arrows.offsetLeft + dx;
+      let top = first.bottom + 18;
+      for (const other of s.images) {
+        if (!(other.width && other.height)) continue;
+        const d = drawn(other.width, other.height);
+        if (d.left < left + arrowsW && d.right > left) top = Math.max(top, d.bottom + 18);
+      }
+      const dy = Math.min(0, top - arrows.offsetTop);
       if (dx || dy) arrows.style.transform = `translate(${dx}px, ${dy}px)`;
     }
     window.addEventListener("resize", placeArrows);
@@ -379,20 +400,36 @@
       if (dialog.open) dialog.close();
     }
 
-    // Closes straight away, so a quick second tap on Close can't step back
-    // a second time (and leave the page).
+    // Step back past the #n that open() added, and let popstate hide the
+    // viewer. It stays up until then, so the page can't be tapped while the
+    // step back is on its way (Safari can cancel a link tapped in that
+    // moment), and more taps on Close are ignored.
+    let closing = false;
     function close() {
-      if (!dialog.open) return;
-      const back = pushedState;
-      pushedState = false;
-      hide();
-      if (back) history.back(); // drop the #n that open() added
-      else history.replaceState(null, "", location.pathname + location.search);
+      if (!dialog.open || closing) return;
+      if (!pushedState) {
+        history.replaceState(null, "", location.pathname + location.search);
+        return hide();
+      }
+      closing = true;
+      history.back();
+      setTimeout(() => { // in case the step back never comes
+        if (!closing) return;
+        history.replaceState(null, "", location.pathname + location.search);
+        hide();
+      }, 800);
     }
+
+    // When the viewer last closed: a quick second tap on Close then lands on
+    // the wall, and shouldn't open the painting under it.
+    let closedAt = 0;
+    const justClosed = () => Date.now() - closedAt < 400;
 
     dialog.addEventListener("close", () => {
       document.body.style.overflow = "";
       pushedState = false;
+      closing = false;
+      closedAt = Date.now();
       firstIdx = null;
       const tile = $$(".work-inner")[idx];
       if (tile) {
@@ -438,7 +475,7 @@
       if (onScreen > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
     }, { passive: true });
 
-    return { open, hide };
+    return { open, hide, justClosed };
   }
 
   /* ---------- About ---------- */
