@@ -99,7 +99,9 @@
       h("a", { href, "aria-current": current === id ? "page" : null }, text);
     $(".site-header").append(
       h("div", { class: "wrap header-inner" },
-        h("a", { class: "wordmark", href: "index.html" },
+        // Home is the folder itself (…/), not …/index.html, except when the
+        // files are opened straight from disk, where a folder wouldn't open.
+        h("a", { class: "wordmark", href: location.protocol === "file:" ? "index.html" : "./" },
           artist.name,
           artist.tagline && h("span", { class: "wordmark-tagline" }, artist.tagline)),
         h("nav", { class: "site-nav", "aria-label": "Main" },
