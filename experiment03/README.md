@@ -47,6 +47,9 @@ There is one `series.html` for all the sections. The `?s=` part of the address c
 | `styles.css` | Design tokens (colours, font, spacing) at the top, then styles for each page |
 | `*.html` | Page shells. They are all the same except for `data-page` and the tags in `<head>`: title, description, address and link preview. They load `styles.css`, `content.js` and `site.js` with a version number: see [Updating the live site](#updating-the-live-site) |
 | `share.jpg` | The picture shown when a link to the site is shared (1200 × 630) |
+| `sitemap.xml` | Every page and photo, for search engines. Made from `content.js` by `make_sitemap.js` (in the folder above): see [Search engines](#search-engines) |
+| `robots.txt` | Lets search engines index the whole site and tells them where `sitemap.xml` is |
+| `favicon.svg`, `favicon.ico`, `apple-touch-icon.png` | The "WH" icon for browser tabs, search results and iPhone home screens |
 
 ## Adding a new section
 
@@ -87,21 +90,39 @@ The new section automatically gets its own page, a card on the Work page, a tab 
 - **About photos:** `aboutImages`, shown below the biography in the left-hand column, top to bottom. Copy a line to add one, or delete one to remove it. On narrower screens (860 pixels or less), where the page is one column, a photo with `bottomOnNarrowScreens: true` (the house photo) moves to the very bottom, below the CV and the resume link, at the full width of the page. On those screens the photos that stay under the biography are no wider than its lines, and the first (the self-portrait) is inset a little more.
 - **Resume:** `resume` holds the PDF's address and link text, shown in a light grey box below the CV in the About page's right-hand column (opens in a new tab). Delete it to hide the link.
 - **Contact photo:** `contactImage`. Delete it to show the Contact page without a photo.
-- **Search and link previews:** each page's `<head>` has its title and description, which are repeated in the `og:` tags for link previews. Addresses assume the site is at `https://wayneherpich.com/`. The preview picture is `share.jpg`. `series.html` sets each section's title, description and address itself when it loads.
+- **Search and link previews:** see [Search engines](#search-engines).
 
 ## Updating the live site
 
 wayneherpich.com tells browsers they may keep `styles.css` and the photos for a week, and browsers keep `content.js` and `site.js` for a while too. So that visitors get changes straight away, every page loads them with a version number:
 
 ```html
-<link rel="stylesheet" href="styles.css?v=1">
-<script src="content.js?v=1" defer></script>
-<script src="site.js?v=1" defer></script>
+<link rel="stylesheet" href="styles.css?v=2">
+<script src="content.js?v=2" defer></script>
+<script src="site.js?v=2" defer></script>
 ```
 
-Whenever `styles.css`, `content.js` or `site.js` change, raise the number (`?v=2`, then `?v=3`, ...) in all five pages, and upload the pages along with the changed files. Until then, browsers can go on using the copies they kept, which keeps the site quick. Photos have their own `?v=` (see above).
+Whenever `styles.css`, `content.js` or `site.js` change, raise the number (`?v=3`, then `?v=4`, ...) in all five pages, and upload the pages along with the changed files. Until then, browsers can go on using the copies they kept, which keeps the site quick. Photos have their own `?v=` (see above).
 
 On the GitHub Pages test site, pages can be up to 10 minutes old, so a change may take that long to show there.
+
+## Search engines
+
+Everything a search engine, screen reader or link preview needs, and where it lives:
+
+- **Titles and descriptions:** each page's `<title>` and `<meta name="description">` are what search results show (keep descriptions under about 155 characters). They're repeated in the `og:` tags for link previews, with `share.jpg` as the picture. `series.html` sets each section's own title, description and address when it loads, from the section's `title` and `description` in `content.js`.
+- **Structured data:** each page's `<head>` has a `<script type="application/ld+json">` block (schema.org) saying who the artist is: name, Yale and Pratt, Connecticut, Instagram, and that the Contact page is for sales and exhibition inquiries. The Home and About pages have the full description, the others refer to it. On section pages, `site.js` adds the section's works as images by Wayne Herpich, which Google Images shows as the creator and credit. If the artist's details change (e.g. a new Instagram), update `index.html` and `about.html`.
+- **Addresses:** every page points search engines and link previews at `https://wayneherpich.com/` (its `canonical` link), including the GitHub Pages test copy, so only the live site is listed.
+- **Alt text:** photos with an `alt` in `content.js` use it. Works without one are described as e.g. "Wayne Herpich, 108 by 48 inch Marker on Cotton Duck, 3 of 19". A short description of the work in `alt` is better still, for screen readers and image search.
+- **`sitemap.xml`:** lists every page and photo, so search engines find them even though the pages build themselves with JavaScript. After adding, renaming or removing a section or photo, make it again and upload it:
+
+  ```sh
+  node make_sitemap.js experiment03
+  ```
+
+- **Without JavaScript:** the `<noscript>` text at the top of each page gives a one-line description and links to the pages, for the few crawlers that don't run scripts.
+
+After the site is live, add it to [Google Search Console](https://search.google.com/search-console) and [Bing Webmaster Tools](https://www.bing.com/webmasters) and submit `https://wayneherpich.com/sitemap.xml` in each, so they index it soon and report any problems.
 
 ## Design notes
 

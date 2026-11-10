@@ -86,6 +86,8 @@ h1, h2, h3 { font-weight: 400; }
 
 .noscript { padding: 48px var(--gutter); color: var(--muted); }
 .noscript a { text-decoration: underline; }
+.noscript p { max-width: 60ch; }
+.noscript p + p { margin-top: 1em; }
 
 /* Small uppercase label used for headings across the site */
 .label {

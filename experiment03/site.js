@@ -60,11 +60,46 @@
     return null;
   }
 
+  // An image's `alt` from content.js, or else e.g. "Wayne Herpich, 108 by 48
+  // inch Marker on Cotton Duck, 3 of 19" (so screen readers don't read the
+  // inch marks as quotes, and sculpture isn't called painting).
   function altText(section, img, i) {
     if (img.alt) return img.alt;
+    const where = section.title.replace(/(\d+)"\s*x\s*(\d+)"/gi, "$1 by $2 inch");
     return img.title
-      ? `${img.title}, painting by ${artist.name}`
-      : `Painting by ${artist.name}, ${section.title}, ${i + 1} of ${section.images.length}`;
+      ? `${img.title}, by ${artist.name}`
+      : `${artist.name}, ${where}, ${i + 1} of ${section.images.length}`;
+  }
+
+  /* ---------- Search engines ---------- */
+
+  // The live site's address. Search engines and link previews are always
+  // pointed here, including from the GitHub Pages test copy.
+  const SITE_URL = "https://wayneherpich.com/";
+
+  // Adds schema.org data for search engines. The pages' <head> already
+  // describes the artist (#artist) and the site (#website).
+  function addStructuredData(data) {
+    const json = JSON.stringify({ "@context": "https://schema.org", ...data }).replace(/</g, "\\u003c");
+    document.head.append(h("script", { type: "application/ld+json" }, json));
+  }
+
+  // A work's photo, credited to the artist (shown in Google Images).
+  const imageObject = (img, caption) => ({
+    "@type": "ImageObject",
+    contentUrl: new URL(srcOf(img), SITE_URL).href,
+    caption,
+    creator: { "@type": "Person", "@id": SITE_URL + "#artist", name: artist.name },
+    creditText: artist.name,
+    copyrightNotice: `© ${artist.name}`,
+  });
+
+  // Sets a <meta> tag (e.g. "description" or "og:title"), adding it if missing.
+  function setMeta(key, value) {
+    const attr = key.startsWith("og:") ? "property" : "name";
+    let el = $(`meta[${attr}="${key}"]`);
+    if (!el) document.head.append(el = h("meta", { [attr]: key }));
+    el.content = value;
   }
 
   // "Title — 2020, Oil on canvas, 40 × 30 in" as nodes; empty if no details.
@@ -150,7 +185,7 @@
     if (photoEl) withRetry(photoEl, srcOf(photo), () => photoEl.closest("figure").remove());
 
     $("#main").append(
-      h("h1", { class: "sr-only" }, `${artist.name} — Paintings`),
+      h("h1", { class: "sr-only" }, `${artist.name} — ${artist.tagline || "Painting + Sculpture"}`),
       photoEl && h("figure", { class: "wrap home-image" }, photoEl));
   }
 
@@ -179,10 +214,29 @@
       return;
     }
 
-    document.title = `${s.title} — ${artist.name}`;
-    // For search engines that run scripts: each section is its own page.
-    $('meta[name="description"]').content = `${s.title}: ${plural(s.images.length, "work")} by ${artist.name}.`;
-    document.head.append(h("link", { rel: "canonical", href: new URL(seriesUrl(s), "https://wayneherpich.com/").href }));
+    // For search engines that run scripts: each section is its own page, with
+    // its own title, description and address, and its works listed as images
+    // by the artist.
+    const pageUrl = new URL(seriesUrl(s), SITE_URL).href;
+    const title = `${s.title} — ${artist.name}`;
+    const description = `${s.title}: ${plural(s.images.length, "work")} by the artist ${artist.name}.${s.description ? " " + s.description : ""}`;
+    document.title = title;
+    setMeta("description", description);
+    setMeta("og:title", title);
+    setMeta("og:description", description);
+    setMeta("og:url", pageUrl);
+    document.head.append(h("link", { rel: "canonical", href: pageUrl }));
+    addStructuredData({
+      "@type": "ImageGallery",
+      "@id": pageUrl,
+      url: pageUrl,
+      name: title,
+      description,
+      inLanguage: "en-US",
+      isPartOf: { "@id": SITE_URL + "#website" },
+      author: { "@id": SITE_URL + "#artist" },
+      associatedMedia: s.images.map((img, i) => imageObject(img, altText(s, img, i))),
+    });
 
     const wall = h("div", { class: "wall" });
     s.images.forEach((img, i) => {
