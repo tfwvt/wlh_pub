@@ -84,7 +84,8 @@ The new section automatically gets its own page, a card on the Work page, a tab 
 - **Home photograph:** `home.image`.
 - **Bio and CV:** edit `bio` and `cv`. To link words in the bio (opening in a new tab), write `[the words](https://...)`. Copy a line to add a show or review (newest first), add `url: "https://..."` to link one, or copy a whole `{ heading: ..., items: [...] }` block for a new group. A group can instead hold smaller groups (`groups: [...]`), shown as subheadings, as Exhibitions and Bibliography do.
 - **Contact details and tagline:** `artist` at the top. Delete a line to hide it. A `phone: "..."` line can be added to show a phone number.
-- **About photo:** `aboutImage`.
+- **About photos:** `aboutImages`, shown below the biography in the left-hand column, top to bottom. Copy a line to add one, or delete one to remove it. On narrower screens (860 pixels or less), where the page is one column, a photo with `bottomOnNarrowScreens: true` (the house photo) moves to the very bottom, below the CV and the resume link, at the full width of the page. On those screens the photos that stay under the biography are no wider than its lines, and the first (the self-portrait) is inset a little more.
+- **Resume:** `resume` holds the PDF's address and link text, shown in a light grey box below the CV in the About page's right-hand column (opens in a new tab). Delete it to hide the link.
 - **Contact photo:** `contactImage`. Delete it to show the Contact page without a photo.
 - **Search and link previews:** each page's `<head>` has its title and description, which are repeated in the `og:` tags for link previews. Addresses assume the site is at `https://wayneherpich.com/`. The preview picture is `share.jpg`. `series.html` sets each section's title, description and address itself when it loads.
 

@@ -573,9 +573,13 @@
   }
 
   function renderAbout() {
-    const photo = SITE.aboutImage;
-    const photoEl = photo && h("img", { alt: photo.alt || "", width: photo.width, height: photo.height, loading: "lazy", decoding: "async" });
-    if (photoEl) withRetry(photoEl, srcOf(photo), () => photoEl.closest("figure").remove());
+    // Photographs below the biography, top to bottom. A photo that won't load is left out.
+    const photos = [].concat(SITE.aboutImages || SITE.aboutImage || []).map((photo) => {
+      const img = h("img", { alt: photo.alt || "", width: photo.width, height: photo.height, loading: "lazy", decoding: "async" });
+      const figure = h("figure", { class: `about-photo${photo.bottomOnNarrowScreens ? " about-photo-last" : ""}` }, img);
+      withRetry(img, srcOf(photo), () => figure.remove());
+      return figure;
+    });
 
     // A group lists `items`, or holds smaller `groups` under its heading (e.g. Bibliography).
     const hasItems = (g) => g && ((g.items && g.items.length) || (g.groups || []).some(hasItems));
@@ -599,11 +603,14 @@
     $("#main").append(
       h("div", { class: "wrap" },
         h("header", { class: "page-head" }, h("h1", { class: "page-title" }, "Biography")),
-        h("div", { class: "two-col" },
-          h("div", null,
+        h("div", { class: "two-col about-cols" },
+          h("div", { class: "about-left" },
             h("div", { class: "bio" }, [].concat(SITE.bio || []).map((t) => h("p", null, withLinks(t)))),
-            photoEl && h("figure", { class: "about-photo" }, photoEl)),
-          h("div", { class: "cv" }, groups.map((g) => cvGroup(g, false))))));
+            photos),
+          h("div", { class: "cv" },
+            groups.map((g) => cvGroup(g, false)),
+            SITE.resume && SITE.resume.url && h("p", { class: "cv-resume" },
+              h("a", { href: SITE.resume.url, target: "_blank", rel: "noopener" }, SITE.resume.label || "Resume"))))));
   }
 
   /* ---------- Contact ---------- */

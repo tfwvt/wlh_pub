@@ -140,8 +140,18 @@ window.SITE = {
     image: { file: "black_white_1.jpg", width: 800, height: 530, alt: "A long black-and-white painting hung on the side of a weathered wooden barn" },
   },
 
-  // Photograph shown on the About page, below the biography.
-  aboutImage: { file: "contact_self_portrait.jpg", width: 706, height: 980, alt: "Self-portrait by Wayne Herpich: a painted head and shoulders in greens and purples, wearing glasses" },
+  // Photographs shown on the About page, below the biography (the left-hand
+  // column), top to bottom. On narrower screens, where the page is one
+  // column, a photo with `bottomOnNarrowScreens: true` moves to the very
+  // bottom instead, below the CV and the resume link.
+  aboutImages: [
+    { file: "contact_self_portrait.jpg", width: 706, height: 980, alt: "Self-portrait by Wayne Herpich: a painted head and shoulders in greens and purples, wearing glasses" },
+    { file: "wayneherpich2026-winchester-house.jpg", width: 800, height: 530, alt: "Black-and-white photograph of a white clapboard house on a stone foundation, a dog looking out of a cellar doorway, with a rocking chair and an old tire in the overgrown yard", bottomOnNarrowScreens: true },
+  ],
+
+  // Resume (PDF) linked on the About page, below the CV (the right-hand
+  // column). Opens in a new tab. Delete this line to hide the link.
+  resume: { url: "https://wayneherpich.com/PDFs/Wayne%20Herpich%20resume.pdf", label: "Wayne Herpich Resume (PDF)" },
 
   // Image at the top of the Contact page.
   contactImage: { file: "about_page.jpg", width: 980, height: 735, alt: "Black-and-white photograph of the artist standing in his studio in front of a large painting of a tree" },
