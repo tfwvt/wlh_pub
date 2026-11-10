@@ -9,6 +9,7 @@
   --ink: #111111;
   --muted: #767676;
   --line: #e7e7e5;
+  --box: #d9d9d6;         /* light grey rectangles: Close in the slideshow, the resume link */
 
   --font: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
@@ -387,19 +388,24 @@ h1, h2, h3 { font-weight: 400; }
 }
 .viewer-bottom { padding-bottom: max(18px, env(safe-area-inset-bottom)); align-items: flex-end; }
 .viewer-series { color: var(--muted); }
-/* Close always has a rectangle round it (the same line as a focus ring);
-   a thicker one shows keyboard focus. */
+/* Close always has a light grey rectangle round it, which turns black on
+   hover; a thicker black one shows keyboard focus. The space between the
+   rectangle and the drawn word and X is the same on all four sides (about
+   9.5px): the line height leaves about 5.5px above and below the letters,
+   so the side padding makes up the rest (the C sits about 0.5px in from
+   the left, and the X icon has about 4px of empty space on its right). */
 .viewer-close {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 0 1.5px 0 5px;
   color: var(--muted);
-  outline: 1px solid var(--ink);
+  outline: 1px solid var(--box);
   outline-offset: 4px;
-  transition: color 0.2s;
+  transition: color 0.2s, outline-color 0.2s;
 }
-.viewer-close:focus-visible { outline-width: 2px; }
-.viewer-close:hover { color: var(--ink); }
+.viewer-close:focus-visible { outline: 2px solid var(--ink); }
+.viewer-close:hover { color: var(--ink); outline-color: var(--ink); }
 .viewer-close svg, .viewer-arrows svg {
   width: 18px;
   height: 18px;
